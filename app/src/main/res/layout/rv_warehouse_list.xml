@@ -9,7 +9,8 @@
     android:background="@drawable/warehouse_card_edge"
     android:layout_marginHorizontal="10dp"
     android:layout_marginBottom="10dp"
-    android:elevation="10dp">
+    android:elevation="10dp"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/name"

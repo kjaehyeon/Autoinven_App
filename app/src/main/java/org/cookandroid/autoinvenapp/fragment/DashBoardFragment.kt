@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +23,8 @@ class DashBoardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var mainActivity: MainActivity
+    lateinit var rv_warehouse_list : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +39,17 @@ class DashBoardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dash_board, container, false)
+        var view = inflater.inflate(R.layout.fragment_dash_board, container, false)
+        mainActivity = context as MainActivity
+        rv_warehouse_list = view.findViewById(R.id.rv_warehouse_list)
+
+        initRecyler()
+
+        return view!!
+    }
+
+    private fun initRecyler() {
+
     }
 
     companion object {
