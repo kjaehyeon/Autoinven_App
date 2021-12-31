@@ -16,11 +16,11 @@ import org.cookandroid.autoinvenapp.fragment.SettingFragment
 class MainActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
     lateinit var pager : ViewPager2
-    val tablayoutTextArray = arrayOf("SCAN", "DASH BOARD", "SETTINGS")
-    val tablayoutIconArray = arrayOf(R.drawable.ic_baseline_qr_code_scanner_24,
+    private val tablayoutTextArray = arrayOf("SCAN", "DASH BOARD", "SETTINGS")
+    private val tablayoutIconArray = arrayOf(R.drawable.ic_baseline_qr_code_scanner_24,
         R.drawable.ic_baseline_view_list_24,
         R.drawable.ic_baseline_settings_24)
-    val PAGE_CNT = 3
+    private val PAGE_CNT = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
