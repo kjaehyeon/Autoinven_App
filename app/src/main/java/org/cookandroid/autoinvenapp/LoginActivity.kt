@@ -27,63 +27,6 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         lateinit var prefs: SharedPreferences
 
-        fun sendLoginApi(id: String, pw: String, context: Context) {
-            val masterKey = MasterKey.Builder(
-                context,
-                MasterKey.DEFAULT_MASTER_KEY_ALIAS
-            ).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                .build()
-            prefs = EncryptedSharedPreferences.create(
-                context,
-                "userinfo",
-                masterKey,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            )
-            val BASE_URL = "http://192.168.0.143:5000/"
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val api = retrofit.create(LoginAPI::class.java)
-            val editor = prefs.edit()
-            val callPostLogin = api.postLogin(id, pw)
-            callPostLogin.enqueue(object : Callback<Request> {
-                override fun onResponse(
-                    call: Call<Request>,
-                    response: Response<Request>
-                ) {
-                    if (response.isSuccessful) {
-                        editor.putString("id", id)
-                        editor.putString("pw", pw)
-                        editor.putString("token", response.body()?.token)
-                        editor.apply()
-                    } else {
-                        when (response.code()) {
-                            400 -> {
-                                val dlg: AlertDialog.Builder =
-                                    AlertDialog.Builder(context)
-                                dlg.setTitle("Message") //제목
-                                dlg.setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
-                                dlg.setPositiveButton("닫기", null)
-                                dlg.show()
-                            }
-                            500 -> {
-                                val dlg: AlertDialog.Builder =
-                                    AlertDialog.Builder(context)
-                                dlg.setTitle("Message") //제목
-                                dlg.setMessage("죄송합니다. 다시 시도해 주세요.") // 메시지
-                                dlg.setPositiveButton("닫기", null)
-                                dlg.show()
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<Request>, t: Throwable) {
-                }
-            })
-        }
     }
 
     val BASE_URL= "http://192.168.0.17:4000/"
@@ -138,8 +81,63 @@ class LoginActivity : AppCompatActivity() {
         }
 
         login.setOnClickListener {
-            sendLoginApi(idtext.text.toString(), pwtext.text.toString(), this@LoginActivity)
+            //sendLoginApi(idtext.text.toString(), pwtext.text.toString(), this@LoginActivity)
+                val masterKey = MasterKey.Builder(
+                    context,
+                    MasterKey.DEFAULT_MASTER_KEY_ALIAS
+                ).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build()
+                prefs = EncryptedSharedPreferences.create(
+                    context,
+                    "userinfo",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                )
+                val BASE_URL = "http://192.168.0.143:5000/"
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                val api = retrofit.create(LoginAPI::class.java)
+                val editor = prefs.edit()
+                val callPostLogin = api.postLogin()
+                callPostLogin.enqueue(object : Callback<Request> {
+                    override fun onResponse(
+                        call: Call<Request>,
+                        response: Response<Request>
+                    ) {
+                        if (response.isSuccessful) {
+                            editor.putString("id", idtext.text.toString())
+                            editor.putString("pw", pwtext.text.toString())
+                            editor.putString("token", response.body()?.token)
+                            editor.apply()
+                        } else {
+                            when (response.code()) {
+                                400 -> {
+                                    val dlg: AlertDialog.Builder =
+                                        AlertDialog.Builder(context)
+                                    dlg.setTitle("Message") //제목
+                                    dlg.setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
+                                    dlg.setPositiveButton("닫기", null)
+                                    dlg.show()
+                                }
+                                500 -> {
+                                    val dlg: AlertDialog.Builder =
+                                        AlertDialog.Builder(context)
+                                    dlg.setTitle("Message") //제목
+                                    dlg.setMessage("죄송합니다. 다시 시도해 주세요.") // 메시지
+                                    dlg.setPositiveButton("닫기", null)
+                                    dlg.show()
+                                }
+                            }
+                        }
+                    }
 
+                    override fun onFailure(call: Call<Request>, t: Throwable) {
+                    }
+                })
+            }
         }
     }
 }
