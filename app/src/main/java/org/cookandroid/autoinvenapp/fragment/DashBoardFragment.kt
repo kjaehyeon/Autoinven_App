@@ -1,5 +1,6 @@
 package org.cookandroid.autoinvenapp.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,16 +12,15 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.cookandroid.autoinvenapp.LoginActivity
-import org.cookandroid.autoinvenapp.MainActivity
-import org.cookandroid.autoinvenapp.R
-import org.cookandroid.autoinvenapp.WareHouseActivity
-import org.cookandroid.autoinvenapp.api.ApiClient
+import org.cookandroid.autoinvenapp.*
+import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.api.WareHouseAPI
 import org.cookandroid.autoinvenapp.data.WareHouseResponse
+import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class DashBoardFragment : Fragment() {
     // TODO: Rename and change types of parameters
@@ -52,7 +52,7 @@ class DashBoardFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_dash_board, container, false)
         mainActivity = context as MainActivity
         rv_warehouse_list = view.findViewById(R.id.rv_warehouse_list)
-        token = LoginActivity.prefs.getString("token", "ERROR")!!
+        token = PrefObject.prefs.getString("token", "ERROR")!!
         initRecyler()
 
         return view!!
@@ -68,24 +68,49 @@ class DashBoardFragment : Fragment() {
                 call: Call<List<WareHouseResponse>>,
                 response: Response<List<WareHouseResponse>>
             ) {
-                if(response.code() == 200){
-                    var iterator : Iterator<WareHouseResponse> = response.body()!!.iterator()
-                    while(iterator.hasNext()){
-                        var data = iterator.next()
-                        datas.apply {
-                            add(
-                                WareHouseResponse(wid=data.wid, name=data.name, address=data.address,
-                                    usage=data.usage, image=data.image, description = data.description)
-                            )
+                when(response.code()){
+                    200 ->{
+                        var iterator : Iterator<WareHouseResponse> = response.body()!!.iterator()
+                        while(iterator.hasNext()){
+                            var data = iterator.next()
+                            datas.apply {
+                                add(
+                                    WareHouseResponse(wid=data.wid, name=data.name, address=data.address,
+                                        usage=data.usage, image=data.image, description = data.description)
+                                )
 
-                            wareHouseAdapter.datas = datas
-                            wareHouseAdapter.notifyDataSetChanged()
+                                wareHouseAdapter.datas = datas
+                                wareHouseAdapter.notifyDataSetChanged()
+                            }
                         }
+                    }
+                    401 ->{
+                        onFailure(call, Exception())
+                    }
+                    else ->{
+                        AlertDialog.Builder(mainActivity)
+                            .setTitle("Message") //제목
+                            .setMessage("다시 시도해주세요") // 메시지
+                            .setPositiveButton("닫기", null)
+                            .show()
                     }
                 }
             }
+
             override fun onFailure(call: Call<List<WareHouseResponse>>, t: Throwable) {
+                AlertDialog.Builder(mainActivity)
+                    .setTitle("Message") //제목
+                    .setMessage("onFaliure") // 메시지
+                    .setPositiveButton("닫기", null)
+                    .show()
             }
+//            override fun onFinalFailure(call: Call<List<WareHouseResponse>>?, t: Throwable?) {
+//                AlertDialog.Builder(mainActivity)
+//                    .setTitle("Message") //제목
+//                    .setMessage("다시 시도해주세요") // 메시지
+//                    .setPositiveButton("닫기", null)
+//                    .show()
+//            }
         })
     }
 }

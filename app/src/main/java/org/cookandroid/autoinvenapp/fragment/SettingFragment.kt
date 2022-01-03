@@ -12,9 +12,9 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.cookandroid.autoinvenapp.LoginActivity
-import org.cookandroid.autoinvenapp.LoginActivity.Companion.prefs
 import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.R
+import org.cookandroid.autoinvenapp.objects.PrefObject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,7 +56,7 @@ class SettingFragment : Fragment() {
             //dlg.setIcon()
             dlg.setNegativeButton("취소", null)
             dlg.setPositiveButton("확인"){ dialog, which ->
-                var editor = LoginActivity.prefs.edit()
+                var editor = PrefObject.prefs.edit()
                 editor.clear()
                 editor.commit()
                 mainActivity.finish()
