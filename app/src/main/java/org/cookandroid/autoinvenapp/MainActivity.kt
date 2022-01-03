@@ -16,6 +16,7 @@ import org.cookandroid.autoinvenapp.fragment.SettingFragment
 class MainActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
     lateinit var pager : ViewPager2
+    lateinit var loginActivity: LoginActivity
     private val tablayoutTextArray = arrayOf("SCAN", "DASH BOARD", "SETTINGS")
     private val tablayoutIconArray = arrayOf(R.drawable.ic_baseline_qr_code_scanner_24,
         R.drawable.ic_baseline_view_list_24,
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.tab_bar)
         pager = findViewById(R.id.pager)
         pager.adapter = ViewPagerAdapter(this)
-
         TabLayoutMediator(tabLayout, pager){tab, position ->
             tab.text = tablayoutTextArray[position]
             tab.setIcon(tablayoutIconArray[position])
