@@ -2,8 +2,6 @@ package org.cookandroid.autoinvenapp
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,20 +9,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.cookandroid.autoinvenapp.api.ApiClient
+import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.api.ItemListAPI
-import org.cookandroid.autoinvenapp.api.WareHouseAPI
 import org.cookandroid.autoinvenapp.data.ItemListResponseData
-import org.cookandroid.autoinvenapp.data.WareHouseResponse
-import org.cookandroid.autoinvenapp.fragment.WareHouseAdapter
+import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class WareHouseActivity : AppCompatActivity() {
     lateinit var wid : String
@@ -34,13 +28,6 @@ class WareHouseActivity : AppCompatActivity() {
     lateinit var itemListAdapter : ItemListAdapter
 
     var datas = mutableListOf<ItemListResponseData>()
-//
-//    val BASE_URL = "http://192.168.0.17:4000/"
-//    val retrofit = Retrofit.Builder()
-//        .baseUrl(BASE_URL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//  val api = retrofit.create(ItemListAPI::class.java)
     private val api = ApiClient.getApiClient().create(ItemListAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +37,7 @@ class WareHouseActivity : AppCompatActivity() {
         wid = intent.getStringExtra("wid").toString()
         wareHouseName = intent.getStringExtra("wareHouseName").toString()
         rv_item_list = findViewById(R.id.rv_item_list)
-        token = LoginActivity.prefs.getString("token", "ERROR")!!
+        token = PrefObject.prefs.getString("token", "ERROR")!!
         initRecyler()
     }
     private fun initRecyler() {

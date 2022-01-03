@@ -1,4 +1,4 @@
-package org.cookandroid.autoinvenapp.api
+package org.cookandroid.autoinvenapp.objects
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -28,7 +28,7 @@ object ApiClient {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain) : Response = with(chain) {
             val newRequest = request().newBuilder()
-                .addHeader("token", LoginActivity.prefs.getString("token", "ERROR")!!)
+                .addHeader("token", PrefObject.prefs.getString("token", "ERROR")!!)
                 .build()
 
             proceed(newRequest)
