@@ -9,7 +9,8 @@
     android:background="@drawable/warehouse_card_edge"
     android:layout_marginHorizontal="10dp"
     android:layout_marginBottom="10dp"
-    android:elevation="10dp">
+    android:elevation="10dp"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/name"
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             tools:srcCompat="@drawable/ic_baseline_location_on_24"/>
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="대구 북구 대현동 112-21"
@@ -39,7 +40,7 @@
             android:layout_gravity="center"/>
     </LinearLayout>
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         tools:srcCompat="@tools:sample/avatars"
@@ -72,6 +73,4 @@
             android:padding="5dp"
             android:gravity="center_vertical"/>
     </LinearLayout>
-
-
 </LinearLayout>
