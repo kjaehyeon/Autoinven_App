@@ -1,14 +1,19 @@
 package org.cookandroid.autoinvenapp.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import org.cookandroid.autoinvenapp.LoginActivity
 import org.cookandroid.autoinvenapp.LoginActivity.Companion.prefs
+import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,9 +30,7 @@ class SettingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var id : TextView
-    lateinit var pw : TextView
-    lateinit var logout : Button
+    lateinit var mainActivity: MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,12 +44,25 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        mainActivity = context as MainActivity
         var view =inflater.inflate(R.layout.fragment_setting, container, false)
-        id = view.findViewById(R.id.id)
-        pw = view.findViewById(R.id.pw)
-        id.text = prefs.getString("id","aaa").toString()
-        pw.text = prefs.getString("pw","eee").toString()
-        Log.d("test",id.text.toString())
+        var logout = view.findViewById<LinearLayout>(R.id.logout)
+        var info = view.findViewById<LinearLayout>(R.id.info)
+        var test = view.findViewById<Button>(R.id.test)
+        logout.setOnClickListener {
+            var dlg = getActivity()?.let { it1 -> AlertDialog.Builder(it1) }
+            dlg!!.setTitle("로그아웃")
+            dlg.setMessage("정말 로그아웃 하시겠습니까?")
+            //dlg.setIcon()
+            dlg.setNegativeButton("취소", null)
+            dlg.setPositiveButton("확인"){ dialog, which ->
+                var editor = LoginActivity.prefs.edit()
+                editor.clear()
+                editor.commit()
+                mainActivity.finish()
+            }
+            dlg.show()
+        }
         return view
     }
 
