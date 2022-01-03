@@ -33,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val api = retrofit.create(LoginAPI::class.java)
-    @RequiresApi(Build.VERSION_CODES.M)
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         val masterKey = MasterKey.Builder(this,
         MasterKey.DEFAULT_MASTER_KEY_ALIAS).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
