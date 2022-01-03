@@ -11,46 +11,57 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
+        <LinearLayout
             android:id="@+id/logout"
             android:layout_width="match_parent"
-            android:layout_height="30dp">
+            android:layout_height="50dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_arrow_right_24"/>
+                android:src="@drawable/ic_baseline_arrow_right_24"
+                android:layout_gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="로그아웃"
                 android:textSize="17dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:backgroundTint="@color/black"/>
+            android:background="@color/black"/>
         <LinearLayout
             android:id="@+id/info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_arrow_right_24"/>
+                android:src="@drawable/ic_baseline_arrow_right_24"
+                android:layout_gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="오픈소스 정보"
                 android:textSize="17dp"
-                android:textStyle="bold" />
-            <Button
-                android:id="@+id/test"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
     </LinearLayout>
-
-
 </LinearLayout>

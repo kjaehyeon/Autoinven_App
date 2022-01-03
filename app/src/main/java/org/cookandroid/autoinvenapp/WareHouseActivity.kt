@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.cookandroid.autoinvenapp.api.ApiClient
 import org.cookandroid.autoinvenapp.api.ItemListAPI
 import org.cookandroid.autoinvenapp.api.WareHouseAPI
 import org.cookandroid.autoinvenapp.data.ItemListResponseData
@@ -33,13 +34,14 @@ class WareHouseActivity : AppCompatActivity() {
     lateinit var itemListAdapter : ItemListAdapter
 
     var datas = mutableListOf<ItemListResponseData>()
-
-    val BASE_URL = "http://192.168.0.17:4000/"
-    val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val api = retrofit.create(ItemListAPI::class.java)
+//
+//    val BASE_URL = "http://192.168.0.17:4000/"
+//    val retrofit = Retrofit.Builder()
+//        .baseUrl(BASE_URL)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
+//  val api = retrofit.create(ItemListAPI::class.java)
+    private val api = ApiClient.getApiClient().create(ItemListAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
