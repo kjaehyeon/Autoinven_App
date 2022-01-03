@@ -128,12 +128,12 @@ class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareH
             address.text = wareHouse.address
             usage.text = wareHouse.usage.toString()
             description.text = wareHouse.description
-            Glide.with(itemView).load(wareHouse.image).into(image)
+            Glide.with(itemView).load(wareHouse.image[0]).into(image)
 
             itemView.setOnClickListener {
                 Intent(context, WareHouseActivity::class.java).apply {
                     putExtra("wid", wareHouse.wid)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    putExtra("warehouse_name", wareHouse.name)
                 }.run { context.startActivity(this) }
             }
         }
