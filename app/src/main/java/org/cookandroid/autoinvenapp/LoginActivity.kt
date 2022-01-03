@@ -4,10 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
@@ -84,13 +86,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /*val BASE_URL= "http://192.168.0.17:4000/"
+    val BASE_URL= "http://192.168.0.17:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val api = retrofit.create(LoginAPI::class.java)
-    @RequiresApi(Build.VERSION_CODES.M)*/
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         val masterKey = MasterKey.Builder(
             this@LoginActivity,
@@ -133,11 +135,11 @@ class LoginActivity : AppCompatActivity() {
             editor.apply()
             var intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
-
         }
 
         login.setOnClickListener {
             sendLoginApi(idtext.text.toString(), pwtext.text.toString(), this@LoginActivity)
+
         }
     }
 }
