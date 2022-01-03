@@ -1,10 +1,14 @@
 package org.cookandroid.autoinvenapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import org.cookandroid.autoinvenapp.LoginActivity.Companion.prefs
 import org.cookandroid.autoinvenapp.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,7 +25,9 @@ class SettingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    lateinit var id : TextView
+    lateinit var pw : TextView
+    lateinit var logout : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +41,13 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false)
+        var view =inflater.inflate(R.layout.fragment_setting, container, false)
+        id = view.findViewById(R.id.id)
+        pw = view.findViewById(R.id.pw)
+        id.text = prefs.getString("id","aaa").toString()
+        pw.text = prefs.getString("pw","eee").toString()
+        Log.d("test",id.text.toString())
+        return view
     }
 
     companion object {

@@ -10,5 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="setting" />
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="id"
+            />
+        <TextView
+            android:id="@+id/pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="pw"
+            />
+    </LinearLayout>
+
 
 </FrameLayout>

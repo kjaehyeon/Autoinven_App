@@ -8,12 +8,14 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.security.keystore.KeyGenParameterSpec
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys
 import org.cookandroid.autoinvenapp.api.LoginAPI
 import org.cookandroid.autoinvenapp.data.Request
@@ -21,7 +23,6 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var masterKeyAlias: String
     lateinit var login: Button
     lateinit var idtext: EditText
     lateinit var pwtext: EditText
@@ -30,25 +31,23 @@ class LoginActivity : AppCompatActivity() {
         lateinit var prefs : SharedPreferences
     }
 
-    val BASE_URL= "http://192.168.0.17:4000/"
+    /*val BASE_URL= "http://192.168.0.17:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val api = retrofit.create(LoginAPI::class.java)
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.M)*/
     override fun onCreate(savedInstanceState: Bundle?) {
-        masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-        prefs = EncryptedSharedPreferences.create( "userinfo",
-            masterKeyAlias,
-            this@LoginActivity,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM )
+        val masterKey = MasterKey.Builder(this,
+        MasterKey.DEFAULT_MASTER_KEY_ALIAS).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+        prefs = EncryptedSharedPreferences.create( this,
+        "userinfo",
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
 
-        prefs = getSharedPreferences("userinfo", 0)
-        val editor = prefs.edit()
-        val id = idtext.text.toString()
-        val pw = pwtext.text.toString()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -56,9 +55,31 @@ class LoginActivity : AppCompatActivity() {
         idtext = findViewById<EditText>(R.id.id)
         pwtext = findViewById<EditText>(R.id.pw)
         autologin = findViewById<CheckBox>(R.id.autologin)
+        val test = findViewById<Button>(R.id.test)
 
+        val editor = prefs.edit()
 
-        login.setOnClickListener {
+        if(prefs.getBoolean("ischecked",false)){
+            var intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        test.setOnClickListener {
+            if(autologin.isChecked) {
+                editor.putBoolean("ischecked",true)
+            }
+            else
+                editor.putBoolean("ischecked",false)
+
+            editor.putString("id", idtext.text.toString())
+            editor.putString("pw", pwtext.text.toString())
+            editor.apply()
+            Log.d("test", idtext.text.toString())
+            var intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+       /* login.setOnClickListener {
             val callPostLogin = api.postLogin(idtext.text.toString(), pwtext.text.toString())
             callPostLogin.enqueue(object : Callback<Request> {
                 override fun onResponse(
@@ -66,15 +87,20 @@ class LoginActivity : AppCompatActivity() {
                     response: Response<Request>
                 ) {
                     if (response.isSuccessful) {
+                        if(autologin.isChecked) {
+                            editor.putBoolean("ischecked",true)
+                        }
                         editor.putString("id", id)
                         editor.putString("pw", pw)
                         editor.apply()
                         Log.d("test", "Success=================")
-                        var intent = Intent(applicationContext, MainActivity::class.java)
+                        var intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
+
                     } else {
                         when (response.code()) {
                             400 -> {
+                                Log.d("test", "fail=================")
                                 val dlg: AlertDialog.Builder =
                                     AlertDialog.Builder(this@LoginActivity)
                                 dlg.setTitle("Message") //제목
@@ -98,6 +124,6 @@ class LoginActivity : AppCompatActivity() {
                     TODO("Not yet implemented")
                 }
             })
-        }
+        }*/
     }
 }
