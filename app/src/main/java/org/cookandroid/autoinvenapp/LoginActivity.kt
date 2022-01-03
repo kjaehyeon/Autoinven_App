@@ -31,13 +31,14 @@ class LoginActivity : AppCompatActivity() {
         lateinit var prefs : SharedPreferences
     }
 
-    /*val BASE_URL= "http://192.168.0.17:4000/"
+    val BASE_URL= "http://192.168.0.17:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val api = retrofit.create(LoginAPI::class.java)
-    @RequiresApi(Build.VERSION_CODES.M)*/
+    @RequiresApi(Build.VERSION_CODES.M)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val masterKey = MasterKey.Builder(this,
         MasterKey.DEFAULT_MASTER_KEY_ALIAS).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -79,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-       /* login.setOnClickListener {
+        login.setOnClickListener {
             val callPostLogin = api.postLogin(idtext.text.toString(), pwtext.text.toString())
             callPostLogin.enqueue(object : Callback<Request> {
                 override fun onResponse(
@@ -90,8 +91,8 @@ class LoginActivity : AppCompatActivity() {
                         if(autologin.isChecked) {
                             editor.putBoolean("ischecked",true)
                         }
-                        editor.putString("id", id)
-                        editor.putString("pw", pw)
+                        editor.putString("id", idtext.text.toString())
+                        editor.putString("pw", pwtext.text.toString())
                         editor.apply()
                         Log.d("test", "Success=================")
                         var intent = Intent(this@LoginActivity, MainActivity::class.java)
@@ -124,6 +125,6 @@ class LoginActivity : AppCompatActivity() {
                     TODO("Not yet implemented")
                 }
             })
-        }*/
+        }
     }
 }
