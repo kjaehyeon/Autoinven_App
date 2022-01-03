@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object PrefObject {
     lateinit var prefs: SharedPreferences
-
+    lateinit var editor : SharedPreferences.Editor
     fun sendLoginApi(id: String, pw: String, context: Context) {
         val masterKey = MasterKey.Builder(
             context,
@@ -36,7 +36,7 @@ object PrefObject {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(LoginAPI::class.java)
-        val editor = prefs.edit()
+       editor = prefs.edit()
         val callPostLogin = api.postLogin(id, pw)
         Log.d("test", "$id $pw")
         callPostLogin.enqueue(object : Callback<Request> {

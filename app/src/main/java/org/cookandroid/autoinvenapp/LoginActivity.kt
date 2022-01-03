@@ -48,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
         idtext = findViewById<EditText>(R.id.id)
         pwtext = findViewById<EditText>(R.id.pw)
         autologin = findViewById<CheckBox>(R.id.autologin)
-        val test = findViewById<Button>(R.id.test)
 
         if (PrefObject.prefs.getBoolean("ischecked", false)) {
             var intent = Intent(this, MainActivity::class.java)
@@ -58,9 +57,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         login.setOnClickListener {
+            if(autologin.isChecked){
+                PrefObject.editor.putBoolean("ischecked",true)
+                PrefObject.editor.apply()
+            }
             PrefObject.sendLoginApi(idtext.text.toString(), pwtext.text.toString(), this@LoginActivity)
             var intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

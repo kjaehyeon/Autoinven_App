@@ -1,16 +1,14 @@
 package org.cookandroid.autoinvenapp.fragment
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import org.cookandroid.autoinvenapp.LoginActivity
 import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.R
@@ -53,12 +51,13 @@ class SettingFragment : Fragment() {
             var dlg = getActivity()?.let { it1 -> AlertDialog.Builder(it1) }
             dlg!!.setTitle("로그아웃")
             dlg.setMessage("정말 로그아웃 하시겠습니까?")
-            //dlg.setIcon()
             dlg.setNegativeButton("취소", null)
             dlg.setPositiveButton("확인"){ dialog, which ->
                 var editor = PrefObject.prefs.edit()
                 editor.clear()
-                editor.commit()
+                editor.apply()
+                var intent = Intent(mainActivity, LoginActivity::class.java)
+                startActivity(intent)
                 mainActivity.finish()
             }
             dlg.show()
