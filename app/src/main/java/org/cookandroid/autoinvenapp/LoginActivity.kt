@@ -1,12 +1,8 @@
 package org.cookandroid.autoinvenapp
 
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -14,11 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import org.cookandroid.autoinvenapp.api.LoginAPI
-import org.cookandroid.autoinvenapp.data.Request
 import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
     lateinit var login: Button
@@ -62,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
                 PrefObject.editor.apply()
             }
             PrefObject.sendLoginApi(idtext.text.toString(), pwtext.text.toString(), this@LoginActivity)
-            var intent = Intent(this@LoginActivity, MainActivity::class.java)
+            var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }

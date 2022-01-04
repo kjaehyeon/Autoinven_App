@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +63,8 @@ class DashBoardFragment : Fragment() {
         wareHouseAdapter = WareHouseAdapter(mainActivity)
         rv_warehouse_list.adapter = wareHouseAdapter
 
-        val callGetWareHouseList = api.getWareHouseList(token=token)
+        val callGetWareHouseList = api.getWareHouseList()
+        Log.d("test", "my token : $token")
         callGetWareHouseList.enqueue(object : Callback<List<WareHouseResponse>> {
             override fun onResponse(
                 call: Call<List<WareHouseResponse>>,
@@ -76,22 +78,27 @@ class DashBoardFragment : Fragment() {
                             datas.apply {
                                 add(
                                     WareHouseResponse(wid=data.wid, name=data.name, address=data.address,
-                                        usage=data.usage, image=data.image, description = data.description)
+                                        usage=data.usage, images=data.images, description = data.description)
                                 )
-
                                 wareHouseAdapter.datas = datas
                                 wareHouseAdapter.notifyDataSetChanged()
                             }
                         }
                     }
                     401 ->{
-                        onFailure(call, Exception())
+                        Log.d("test", "401")
+                        PrefObject.sendLoginApi(
+                            PrefObject.prefs.getString("id", "").toString(),
+                            PrefObject.prefs.getString("pw", "").toString(),
+                            mainActivity
+                        )
+                        call.clone().enqueue(this)
                     }
                     else ->{
                         AlertDialog.Builder(mainActivity)
                             .setTitle("Message") //제목
                             .setMessage("다시 시도해주세요") // 메시지
-                            .setPositiveButton("닫기", null)
+                            .setNegativeButton("닫기", null)
                             .show()
                     }
                 }
@@ -100,17 +107,10 @@ class DashBoardFragment : Fragment() {
             override fun onFailure(call: Call<List<WareHouseResponse>>, t: Throwable) {
                 AlertDialog.Builder(mainActivity)
                     .setTitle("Message") //제목
-                    .setMessage("onFaliure") // 메시지
-                    .setPositiveButton("닫기", null)
+                    .setMessage("실패.") // 메시지
+                    .setNegativeButton("닫기", null)
                     .show()
             }
-//            override fun onFinalFailure(call: Call<List<WareHouseResponse>>?, t: Throwable?) {
-//                AlertDialog.Builder(mainActivity)
-//                    .setTitle("Message") //제목
-//                    .setMessage("다시 시도해주세요") // 메시지
-//                    .setPositiveButton("닫기", null)
-//                    .show()
-//            }
         })
     }
 }
@@ -140,9 +140,9 @@ class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareH
         fun bind(wareHouse: WareHouseResponse) {
             name.text = wareHouse.name
             address.text = wareHouse.address
-            usage.text = wareHouse.usage.toString()
+            usage.text = wareHouse.usage.toString() + "%"
             description.text = wareHouse.description
-            Glide.with(itemView).load(wareHouse.image[0]).into(image)
+            Glide.with(itemView).load(wareHouse.images[0]).into(image)
 
             itemView.setOnClickListener {
                 Intent(context, WareHouseActivity::class.java).apply {

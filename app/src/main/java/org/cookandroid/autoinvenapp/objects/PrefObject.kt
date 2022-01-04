@@ -2,10 +2,14 @@ package org.cookandroid.autoinvenapp.objects
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import org.cookandroid.autoinvenapp.LoginActivity
+import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.api.LoginAPI
 import org.cookandroid.autoinvenapp.data.Request
 import retrofit2.Call
@@ -16,8 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object PrefObject {
     lateinit var prefs: SharedPreferences
-    lateinit var editor : SharedPreferences.Editor
+    lateinit var editor: SharedPreferences.Editor
     fun sendLoginApi(id: String, pw: String, context: Context) {
+        Log.d("test","in sendLoginApi")
         val masterKey = MasterKey.Builder(
             context,
             MasterKey.DEFAULT_MASTER_KEY_ALIAS
@@ -36,39 +41,32 @@ object PrefObject {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(LoginAPI::class.java)
-       editor = prefs.edit()
+        editor = prefs.edit()
         val callPostLogin = api.postLogin(id, pw)
-        Log.d("test", "$id $pw")
         callPostLogin.enqueue(object : Callback<Request> {
             override fun onResponse(
                 call: Call<Request>,
                 response: Response<Request>
             ) {
                 if (response.isSuccessful) {
+                    editor.remove("token")
                     editor.putString("id", id)
                     editor.putString("pw", pw)
                     editor.putString("token", response.body()?.token)
+                    Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
                 } else {
                     when (response.code()) {
-                        401 -> {
+                        400 -> {
                             AlertDialog.Builder(context)
                                 .setTitle("Message") //제목
-                                .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
-                                .setPositiveButton("닫기", null)
-                                .show()
-                        }
-                        500 -> {
-                            AlertDialog.Builder(context)
-                                .setTitle("Message") //제목
-                                .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
+                                .setMessage("비밀번호가 변경되었습니다.") // 메시지
                                 .setPositiveButton("닫기", null)
                                 .show()
                         }
                     }
                 }
             }
-
             override fun onFailure(call: Call<Request>, t: Throwable) {
                 t.stackTrace
             }
