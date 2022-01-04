@@ -2,10 +2,14 @@ package org.cookandroid.autoinvenapp.objects
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import org.cookandroid.autoinvenapp.LoginActivity
+import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.api.LoginAPI
 import org.cookandroid.autoinvenapp.data.Request
 import retrofit2.Call
@@ -17,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object PrefObject {
     lateinit var prefs: SharedPreferences
     lateinit var editor : SharedPreferences.Editor
+    lateinit var loginActivity : LoginActivity
     fun sendLoginApi(id: String, pw: String, context: Context) {
         val masterKey = MasterKey.Builder(
             context,
@@ -30,6 +35,7 @@ object PrefObject {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+        loginActivity = context as LoginActivity
         val BASE_URL = "http://192.168.0.143:5000/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -49,9 +55,15 @@ object PrefObject {
                     editor.putString("pw", pw)
                     editor.putString("token", response.body()?.token)
                     editor.apply()
+                    if(context == loginActivity) {
+                        var intent = Intent(context, MainActivity::class.java)
+                        startActivity(context, intent, null)
+                        loginActivity.finish()
+                    }
+
                 } else {
                     when (response.code()) {
-                        401 -> {
+                        400 -> {
                             AlertDialog.Builder(context)
                                 .setTitle("Message") //제목
                                 .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
@@ -61,14 +73,13 @@ object PrefObject {
                         500 -> {
                             AlertDialog.Builder(context)
                                 .setTitle("Message") //제목
-                                .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
+                                .setMessage("잠시 후 다시 시도해주세요") // 메시지
                                 .setPositiveButton("닫기", null)
                                 .show()
                         }
                     }
                 }
             }
-
             override fun onFailure(call: Call<Request>, t: Throwable) {
                 t.stackTrace
             }

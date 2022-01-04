@@ -46,7 +46,6 @@ class SettingFragment : Fragment() {
         var view =inflater.inflate(R.layout.fragment_setting, container, false)
         var logout = view.findViewById<LinearLayout>(R.id.logout)
         var info = view.findViewById<LinearLayout>(R.id.info)
-        var test = view.findViewById<Button>(R.id.test)
         logout.setOnClickListener {
             var dlg = getActivity()?.let { it1 -> AlertDialog.Builder(it1) }
             dlg!!.setTitle("로그아웃")
