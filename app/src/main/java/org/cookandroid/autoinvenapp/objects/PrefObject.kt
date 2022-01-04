@@ -20,7 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object PrefObject {
     lateinit var prefs: SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
+    lateinit var editor : SharedPreferences.Editor
+    lateinit var loginActivity : LoginActivity
+
     fun sendLoginApi(id: String, pw: String, context: Context) {
         Log.d("test","in sendLoginApi")
         val masterKey = MasterKey.Builder(
@@ -35,6 +37,7 @@ object PrefObject {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+        loginActivity = context as LoginActivity
         val BASE_URL = "http://192.168.0.143:5000/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -55,12 +58,25 @@ object PrefObject {
                     editor.putString("token", response.body()?.token)
                     Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
+                    if(context == loginActivity) {
+                        var intent = Intent(context, MainActivity::class.java)
+                        startActivity(context, intent, null)
+                        loginActivity.finish()
+                    }
+
                 } else {
                     when (response.code()) {
                         400 -> {
                             AlertDialog.Builder(context)
                                 .setTitle("Message") //제목
-                                .setMessage("비밀번호가 변경되었습니다.") // 메시지
+                                .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
+                                .setPositiveButton("닫기", null)
+                                .show()
+                        }
+                        500 -> {
+                            AlertDialog.Builder(context)
+                                .setTitle("Message") //제목
+                                .setMessage("잠시 후 다시 시도해주세요") // 메시지
                                 .setPositiveButton("닫기", null)
                                 .show()
                         }

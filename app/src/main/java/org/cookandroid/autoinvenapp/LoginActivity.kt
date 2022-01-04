@@ -54,10 +54,8 @@ class LoginActivity : AppCompatActivity() {
                 PrefObject.editor.putBoolean("ischecked",true)
                 PrefObject.editor.apply()
             }
-            PrefObject.sendLoginApi(idtext.text.toString(), pwtext.text.toString(), this@LoginActivity)
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            PrefObject.sendLoginApi(idtext.text.toString(), pwtext.text.toString(),this@LoginActivity)
         }
+
     }
 }
