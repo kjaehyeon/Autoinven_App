@@ -1,6 +1,7 @@
 package org.cookandroid.autoinvenapp
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,29 +45,65 @@ class WareHouseActivity : AppCompatActivity() {
         itemListAdapter = ItemListAdapter(this@WareHouseActivity)
         rv_item_list.adapter = itemListAdapter
 
-        val callGetWareHouseList = api.getItemList(token=token, wid=wid)
+        val callGetWareHouseList = api.getItemList(wid=wid)
         callGetWareHouseList.enqueue(object : Callback<List<ItemListResponseData>> {
             override fun onResponse(
                 call: Call<List<ItemListResponseData>>,
                 response: Response<List<ItemListResponseData>>
             ) {
-                if(response.code() == 200){
-                    var iterator : Iterator<ItemListResponseData> = response.body()!!.iterator()
-                    while(iterator.hasNext()){
-                        var data = iterator.next()
-                        datas.apply {
-                            add(
-                                ItemListResponseData(it_id=data.it_id, name=data.name, status=data.status,
-                                                    datetime = data.datetime, buyer_name = data.buyer_name, image=data.image)
-                            )
+                when(response.code()){
+                    200 -> {
+                        var iterator: Iterator<ItemListResponseData> = response.body()!!.iterator()
+                        while (iterator.hasNext()) {
+                            var data = iterator.next()
+                            datas.apply {
+                                add(
+                                    ItemListResponseData(
+                                        it_id = data.it_id,
+                                        name = data.name,
+                                        status = data.status,
+                                        datetime = data.datetime,
+                                        buyer_name = data.buyer_name,
+                                        image = data.image
+                                    )
+                                )
 
-                            itemListAdapter.datas = datas
-                            itemListAdapter.notifyDataSetChanged()
+                                itemListAdapter.datas = datas
+                                itemListAdapter.notifyDataSetChanged()
+                            }
                         }
+                    }
+                    400 ->{
+                        AlertDialog.Builder(this@WareHouseActivity)
+                            .setTitle("Message") //제목
+                            .setMessage("비밀번호가 변경되었습니다.") // 메시지
+                            .setNegativeButton("닫기", null)
+                            .show()
+                        //TODO("자동으로 로그아웃 되는 로직 추가 바람")
+                    }
+                    401 ->{
+                        PrefObject.sendLoginApi(
+                            PrefObject.prefs.getString("id", "").toString(),
+                            PrefObject.prefs.getString("pw", "").toString(),
+                            this@WareHouseActivity
+                        )
+                        call.clone().enqueue(this)
+                    }
+                    else ->{
+                        AlertDialog.Builder(this@WareHouseActivity)
+                            .setTitle("Message") //제목
+                            .setMessage("다시 시도해 주세요.") // 메시지
+                            .setNegativeButton("닫기", null)
+                            .show()
                     }
                 }
             }
             override fun onFailure(call: Call<List<ItemListResponseData>>, t: Throwable) {
+                AlertDialog.Builder(this@WareHouseActivity)
+                    .setTitle("Message") //제목
+                    .setMessage("실패") // 메시지
+                    .setNegativeButton("닫기", null)
+                    .show()
             }
         })
     }
@@ -96,7 +133,7 @@ class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemLi
 
         @SuppressLint("ResourceAsColor")
         fun bind(item: ItemListResponseData) {
-            Glide.with(itemView).load(item.image[0]).into(itemImage)
+            Glide.with(itemView).load(item.image).into(itemImage)
             itemName.text = item.name
             datetime.text = item.datetime
             buyerName.text = item.datetime

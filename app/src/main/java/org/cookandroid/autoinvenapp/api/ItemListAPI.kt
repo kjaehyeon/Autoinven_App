@@ -10,7 +10,6 @@ import retrofit2.http.Query
 interface ItemListAPI {
     @GET("/api/itemlist")
     fun getItemList(
-        @Header("token") token: String?,
         @Query("wid") wid : String?
     ): Call<List<ItemListResponseData>>
 }

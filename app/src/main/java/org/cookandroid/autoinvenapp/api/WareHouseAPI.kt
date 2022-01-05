@@ -8,6 +8,5 @@ import retrofit2.http.Header
 interface WareHouseAPI {
     @GET("/api/warehouse")
     fun getWareHouseList(
-        @Header("token") token: String?
     ): Call<List<WareHouseResponse>>
 }

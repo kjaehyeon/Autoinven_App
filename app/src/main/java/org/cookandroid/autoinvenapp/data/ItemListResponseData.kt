@@ -6,5 +6,5 @@ data class ItemListResponseData (
     val status : Int,
     val datetime : String,
     val buyer_name : String,
-    val image : List<String>
+    val image : String
 )

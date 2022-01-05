@@ -28,7 +28,9 @@ object PrefObject {
     lateinit var prefs: SharedPreferences
     lateinit var editor : SharedPreferences.Editor
     lateinit var loginActivity : LoginActivity
+
     fun sendLoginApi(id: String, pw: String, context: Context) {
+        Log.d("test","in sendLoginApi")
         val masterKey = MasterKey.Builder(
             context,
             MasterKey.DEFAULT_MASTER_KEY_ALIAS
@@ -53,16 +55,17 @@ object PrefObject {
         dialog.show()
 
         val callPostLogin = api.postLogin(id, pw)
-        Log.d("test", "$id $pw")
         callPostLogin.enqueue(object : Callback<Request> {
             override fun onResponse(
                 call: Call<Request>,
                 response: Response<Request>
             ) {
                 if (response.isSuccessful) {
+                    editor.remove("token")
                     editor.putString("id", id)
                     editor.putString("pw", pw)
                     editor.putString("token", response.body()?.token)
+                    Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
                     if(context == loginActivity) {
                         var intent = Intent(context, MainActivity::class.java)
