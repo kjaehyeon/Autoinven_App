@@ -84,6 +84,7 @@ object PrefObject {
                 }
             }
             override fun onFailure(call: Call<Request>, t: Throwable) {
+                t.stackTrace
                 AlertDialog.Builder(context)
                     .setTitle("Message") //제목
                     .setMessage("Fail") // 메시지
