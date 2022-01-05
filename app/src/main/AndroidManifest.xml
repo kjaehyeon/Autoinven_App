@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.cookandroid.autoinvenapp">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 갤러리 권한 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" /><!--for QR -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -31,7 +30,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true"
+
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"/>
     </application>
 
 </manifest>

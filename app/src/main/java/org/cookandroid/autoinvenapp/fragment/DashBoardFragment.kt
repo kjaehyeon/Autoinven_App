@@ -37,12 +37,7 @@ class DashBoardFragment : Fragment() {
     lateinit var dialog : LoadingActivity
     var datas = mutableListOf<WareHouseResponse>()
 
-
     private val api = ApiClient.getApiClient().create(WareHouseAPI::class.java)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
