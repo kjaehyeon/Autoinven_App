@@ -101,9 +101,7 @@ object PrefObject {
             }
             override fun onFailure(call: Call<Request>, t: Throwable) {
                 t.stackTrace
-                LoadingActivity(context).dismiss()
             }
         })
-        LoadingActivity(context).cancel()
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import org.cookandroid.autoinvenapp.LoginActivity
 import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.R
@@ -60,6 +61,9 @@ class SettingFragment : Fragment() {
                 mainActivity.finish()
             }
             dlg.show()
+        }
+        info.setOnClickListener {
+            startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
         }
         return view
     }
