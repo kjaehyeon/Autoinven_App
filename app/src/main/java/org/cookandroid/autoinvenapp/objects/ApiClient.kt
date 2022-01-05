@@ -10,14 +10,20 @@ import java.io.IOException
 object ApiClient {
     private const val BASE_URL = "http://192.168.0.143:5000/"
     //private const val BASE_URL = "http://192.168.0.145:5000/"
-    fun getApiClient(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(provideOkHttpClient(AppInterceptor()))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    fun getApiClient(withToken : Boolean = true): Retrofit {
+        return if(withToken){
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(provideOkHttpClient(AppInterceptor()))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }else{
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
     }
-
     private fun provideOkHttpClient(interceptor: AppInterceptor): OkHttpClient
         = OkHttpClient.Builder().run {
             addInterceptor(interceptor)
