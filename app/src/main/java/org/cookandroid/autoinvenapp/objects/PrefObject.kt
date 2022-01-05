@@ -36,11 +36,7 @@ object PrefObject {
             .build()
         val api = ApiClient.getApiClient(withToken = false).create(LoginAPI::class.java)
         val dialog = LoadingActivity(context)
-        var isLoginActivity : Boolean = false
-        try{
-            context as LoginActivity
-            isLoginActivity = true
-        }catch (e : ClassCastException){}
+
         prefs = EncryptedSharedPreferences.create(
             context,
             "userinfo",
@@ -50,7 +46,7 @@ object PrefObject {
         )
         editor = prefs.edit()
 
-        if(isLoginActivity) dialog.show()
+        if(context is LoginActivity) dialog.show()
         val callPostLogin = api.postLogin(id, pw)
         callPostLogin.enqueue(object : Callback<Request> {
             override fun onResponse(
@@ -63,17 +59,16 @@ object PrefObject {
                     editor.putString("token", response.body()?.token)
                     Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
-                    if(isLoginActivity) {
+                    if(context is LoginActivity) {
                         var intent = Intent(context, MainActivity::class.java)
                         startActivity(context, intent, null)
-                        (context as LoginActivity).finish()
+                        context.finish()
                         dialog.dismiss()
                     }
                 } else {
-                    Log.d("test","on not success")
                     when (response.code()) {
                         400 -> {
-                            if(isLoginActivity){
+                            if(context is LoginActivity){
                                 AlertDialog.Builder(context)
                                     .setTitle("Message") //제목
                                     .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지

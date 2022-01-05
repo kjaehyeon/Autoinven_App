@@ -6,7 +6,6 @@ import org.cookandroid.autoinvenapp.R
 
 class LoadingActivity
 constructor(context: Context) : Dialog(context){
-
     init {
         setCanceledOnTouchOutside(false)
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

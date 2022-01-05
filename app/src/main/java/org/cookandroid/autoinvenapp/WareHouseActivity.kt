@@ -1,5 +1,6 @@
 package org.cookandroid.autoinvenapp
 
+import LoadingActivity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
@@ -14,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.drawToBitmap
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.cookandroid.autoinvenapp.api.ItemListAPI
@@ -30,6 +32,8 @@ class WareHouseActivity : AppCompatActivity() {
     lateinit var token : String
     lateinit var rv_item_list : RecyclerView
     lateinit var itemListAdapter : ItemListAdapter
+    lateinit var dialog : LoadingActivity
+    lateinit var emptyText : TextView
 
     var datas = mutableListOf<ItemListResponseData>()
     private val api = ApiClient.getApiClient().create(ItemListAPI::class.java)
@@ -44,6 +48,8 @@ class WareHouseActivity : AppCompatActivity() {
         wareHouseName = intent.getStringExtra("wareHouseName").toString()
         rv_item_list = findViewById(R.id.rv_item_list)
         token = PrefObject.prefs.getString("token", "ERROR")!!
+        dialog = LoadingActivity(this@WareHouseActivity)
+        emptyText = findViewById(R.id.emptyText)
         initRecyler()
     }
     private fun initRecyler() {
@@ -51,6 +57,7 @@ class WareHouseActivity : AppCompatActivity() {
         rv_item_list.adapter = itemListAdapter
 
         val callGetWareHouseList = api.getItemList(wid=wid)
+        dialog.show()
         callGetWareHouseList.enqueue(object : Callback<List<ItemListResponseData>> {
             override fun onResponse(
                 call: Call<List<ItemListResponseData>>,
@@ -73,11 +80,11 @@ class WareHouseActivity : AppCompatActivity() {
                                         image = data.image
                                     )
                                 )
-
                                 itemListAdapter.datas = datas
                                 itemListAdapter.notifyDataSetChanged()
                             }
                         }
+                        dismissLoadingBar()
                     }
                     400 ->{
                         AlertDialog.Builder(this@WareHouseActivity)
@@ -94,6 +101,7 @@ class WareHouseActivity : AppCompatActivity() {
                             this@WareHouseActivity
                         )
                         call.clone().enqueue(this)
+                        //TODO("토큰 갱신 시도 횟수 제한 로직 추가 바람")
                     }
                     else ->{
                         AlertDialog.Builder(this@WareHouseActivity)
@@ -101,6 +109,7 @@ class WareHouseActivity : AppCompatActivity() {
                             .setMessage("다시 시도해 주세요.") // 메시지
                             .setNegativeButton("닫기", null)
                             .show()
+                        dismissLoadingBar()
                     }
                 }
             }
@@ -111,8 +120,16 @@ class WareHouseActivity : AppCompatActivity() {
                     .setMessage("실패") // 메시지
                     .setNegativeButton("닫기", null)
                     .show()
+                dismissLoadingBar()
             }
         })
+    }
+    fun dismissLoadingBar(){
+        if(datas.isEmpty()){
+            rv_item_list.isVisible = false
+            emptyText.isVisible = true
+        }
+        dialog.dismiss()
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
