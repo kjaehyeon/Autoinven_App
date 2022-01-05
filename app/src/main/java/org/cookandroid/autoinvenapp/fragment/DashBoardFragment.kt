@@ -1,5 +1,6 @@
 package org.cookandroid.autoinvenapp.fragment
 
+import LoadingActivity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,14 +33,11 @@ class DashBoardFragment : Fragment() {
     lateinit var rv_warehouse_list : RecyclerView
     lateinit var wareHouseAdapter : WareHouseAdapter
     lateinit var token : String
+    lateinit var emptyText : TextView
+    lateinit var dialog : LoadingActivity
     var datas = mutableListOf<WareHouseResponse>()
 
-//    val BASE_URL = "http://192.168.0.17:4000/"
-//    val retrofit = Retrofit.Builder()
-//        .baseUrl(BASE_URL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//    val api = retrofit.create(WareHouseAPI::class.java)
+
     private val api = ApiClient.getApiClient().create(WareHouseAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +53,8 @@ class DashBoardFragment : Fragment() {
         mainActivity = context as MainActivity
         rv_warehouse_list = view.findViewById(R.id.rv_warehouse_list)
         token = PrefObject.prefs.getString("token", "ERROR")!!
+        emptyText = view.findViewById(R.id.emptyText)
+        dialog = LoadingActivity(mainActivity)
         initRecyler()
 
         return view!!
@@ -64,7 +65,7 @@ class DashBoardFragment : Fragment() {
         rv_warehouse_list.adapter = wareHouseAdapter
 
         val callGetWareHouseList = api.getWareHouseList()
-        Log.d("test", "my token : $token")
+        dialog.show()
         callGetWareHouseList.enqueue(object : Callback<List<WareHouseResponse>> {
             override fun onResponse(
                 call: Call<List<WareHouseResponse>>,
@@ -84,6 +85,7 @@ class DashBoardFragment : Fragment() {
                                 wareHouseAdapter.notifyDataSetChanged()
                             }
                         }
+                        dismissLoadingBar()
                     }
                     401 ->{
                         Log.d("test", "401")
@@ -100,18 +102,26 @@ class DashBoardFragment : Fragment() {
                             .setMessage("다시 시도해주세요") // 메시지
                             .setNegativeButton("닫기", null)
                             .show()
+                        dismissLoadingBar()
                     }
                 }
             }
-
             override fun onFailure(call: Call<List<WareHouseResponse>>, t: Throwable) {
                 AlertDialog.Builder(mainActivity)
                     .setTitle("Message") //제목
                     .setMessage("실패.") // 메시지
                     .setNegativeButton("닫기", null)
                     .show()
+                dismissLoadingBar()
             }
         })
+    }
+    fun dismissLoadingBar(){
+        if(datas.isEmpty()){
+            rv_warehouse_list.isVisible = false
+            emptyText.isVisible = true
+        }
+        dialog.dismiss()
     }
 }
 

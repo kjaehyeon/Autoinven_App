@@ -20,14 +20,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.app.ProgressDialog
-import android.content.DialogInterface
+import java.lang.ClassCastException
 
 
 object PrefObject {
     lateinit var prefs: SharedPreferences
     lateinit var editor : SharedPreferences.Editor
-    lateinit var loginActivity : LoginActivity
 
     fun sendLoginApi(id: String, pw: String, context: Context) {
         Log.d("test","in sendLoginApi")
@@ -36,6 +34,9 @@ object PrefObject {
             MasterKey.DEFAULT_MASTER_KEY_ALIAS
         ).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
+        val api = ApiClient.getApiClient(withToken = false).create(LoginAPI::class.java)
+        val dialog = LoadingActivity(context)
+
         prefs = EncryptedSharedPreferences.create(
             context,
             "userinfo",
@@ -43,17 +44,9 @@ object PrefObject {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        loginActivity = context as LoginActivity
-        val BASE_URL = "http://192.168.0.143:5000/"
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val api = retrofit.create(LoginAPI::class.java)
         editor = prefs.edit()
-        val dialog = LoadingActivity(context)
-        dialog.show()
 
+        if(context is LoginActivity) dialog.show()
         val callPostLogin = api.postLogin(id, pw)
         callPostLogin.enqueue(object : Callback<Request> {
             override fun onResponse(
@@ -61,23 +54,21 @@ object PrefObject {
                 response: Response<Request>
             ) {
                 if (response.isSuccessful) {
-                    editor.remove("token")
                     editor.putString("id", id)
                     editor.putString("pw", pw)
                     editor.putString("token", response.body()?.token)
                     Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
-                    if(context == loginActivity) {
+                    if(context is LoginActivity) {
                         var intent = Intent(context, MainActivity::class.java)
                         startActivity(context, intent, null)
+                        context.finish()
                         dialog.dismiss()
-                        //loginActivity.finish()
                     }
-
                 } else {
                     when (response.code()) {
                         400 -> {
-                            if(context == loginActivity){
+                            if(context is LoginActivity){
                                 AlertDialog.Builder(context)
                                     .setTitle("Message") //제목
                                     .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
@@ -87,20 +78,24 @@ object PrefObject {
                             }
                         }
                         500 -> {
-                            if(context == loginActivity){
-                                AlertDialog.Builder(context)
-                                    .setTitle("Message") //제목
-                                    .setMessage("잠시 후 다시 시도해주세요") // 메시지
-                                    .setNegativeButton("닫기", null)
-                                    .show()
-                                dialog.dismiss()
-                            }
+                            AlertDialog.Builder(context)
+                                .setTitle("Message") //제목
+                                .setMessage("잠시 후 다시 시도해주세요") // 메시지
+                                .setNegativeButton("닫기", null)
+                                .show()
+                            dialog.dismiss()
                         }
                     }
                 }
             }
             override fun onFailure(call: Call<Request>, t: Throwable) {
                 t.stackTrace
+                AlertDialog.Builder(context)
+                    .setTitle("Message") //제목
+                    .setMessage("Fail") // 메시지
+                    .setNegativeButton("닫기", null)
+                    .show()
+                dialog.dismiss()
             }
         })
     }
