@@ -27,41 +27,32 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="2"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Engine Part 1"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="5dp"
-                android:gravity="bottom"/>
-
+            android:layout_marginHorizontal="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginHorizontal="5dp">
-
+                android:layout_weight="1"
+               >
                 <TextView
-                    android:id="@+id/datetime_name"
+                    android:id="@+id/item_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="등록일"
+                    android:text="Engine Part 1"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textSize="12.5sp"
-                    />
-
-                <TextView
-                    android:id="@+id/datetime"
+                    android:layout_weight="3"
+                    android:layout_gravity="center_vertical"/>
+                <Button
+                    android:id="@+id/status_badge"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="2022년 01월 10일 13:56"
-                    android:textSize="12.5sp" />
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/gray"
+                    android:text="입고전"
+                    android:textSize="11sp"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:layout_gravity="top"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -69,31 +60,47 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_weight="1.3"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="0.8">
+            <TextView
+                android:id="@+id/datetime_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="등록일"
+                android:textStyle="bold"
+                android:textSize="12.5sp"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:id="@+id/datetime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="2022년 01월 10일 13:56"
+                android:textSize="12.5sp"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.8"
             android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12.5sp"
+                android:textStyle="bold"
+                android:text="소유주"
+                android:layout_gravity="center_vertical" />
             <TextView
                 android:id="@+id/buyer_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 android:text="DeMar DeRozan"
                 android:layout_gravity="center_vertical"/>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/status_badge"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/gray"
-                    android:text="입고전"
-                    android:textSize="12sp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="5dp"/>
-            </LinearLayout>
 
         </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import org.cookandroid.autoinvenapp.objects.PrefObject
@@ -18,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
     lateinit var idtext: EditText
     lateinit var pwtext: EditText
     lateinit var autologin: CheckBox
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         val masterKey = MasterKey.Builder(
@@ -43,8 +43,7 @@ class LoginActivity : AppCompatActivity() {
         autologin = findViewById<CheckBox>(R.id.autologin)
 
         if (PrefObject.prefs.getBoolean("ischecked", false)) {
-            var intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            var intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }

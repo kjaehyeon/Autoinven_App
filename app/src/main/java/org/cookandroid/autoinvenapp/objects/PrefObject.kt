@@ -17,13 +17,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.ClassCastException
 
 object PrefObject {
     lateinit var prefs: SharedPreferences
     lateinit var editor : SharedPreferences.Editor
-    lateinit var loginActivity : LoginActivity
 
     fun sendLoginApi(id: String, pw: String, context: Context) {
+        val BASE_URL = "http://192.168.0.143:5000/"
+        //val BASE_URL = "http://192.168.0.145:5000/"
         Log.d("test","in sendLoginApi")
         val masterKey = MasterKey.Builder(
             context,
@@ -37,8 +39,6 @@ object PrefObject {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        loginActivity = context as LoginActivity
-        val BASE_URL = "http://192.168.0.143:5000/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -52,19 +52,19 @@ object PrefObject {
                 response: Response<Request>
             ) {
                 if (response.isSuccessful) {
-                    editor.remove("token")
                     editor.putString("id", id)
                     editor.putString("pw", pw)
                     editor.putString("token", response.body()?.token)
                     Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
-                    if(context == loginActivity) {
+                    try{
+                        val loginActivity = context as LoginActivity
                         var intent = Intent(context, MainActivity::class.java)
                         startActivity(context, intent, null)
                         loginActivity.finish()
-                    }
-
+                    }catch (e : ClassCastException){}
                 } else {
+                    Log.d("test","on not success")
                     when (response.code()) {
                         400 -> {
                             AlertDialog.Builder(context)
@@ -84,7 +84,7 @@ object PrefObject {
                 }
             }
             override fun onFailure(call: Call<Request>, t: Throwable) {
-                t.stackTrace
+                Log.d("test","on Failure")
             }
         })
     }
