@@ -1,5 +1,8 @@
 package org.cookandroid.autoinvenapp.objects
 
+import LoadingActivity
+import android.R
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -17,6 +20,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.app.ProgressDialog
+import android.content.DialogInterface
+
 
 object PrefObject {
     lateinit var prefs: SharedPreferences
@@ -42,7 +48,10 @@ object PrefObject {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(LoginAPI::class.java)
-       editor = prefs.edit()
+        editor = prefs.edit()
+        val dialog = LoadingActivity(context)
+        dialog.show()
+
         val callPostLogin = api.postLogin(id, pw)
         Log.d("test", "$id $pw")
         callPostLogin.enqueue(object : Callback<Request> {
@@ -58,31 +67,40 @@ object PrefObject {
                     if(context == loginActivity) {
                         var intent = Intent(context, MainActivity::class.java)
                         startActivity(context, intent, null)
-                        loginActivity.finish()
+                        dialog.dismiss()
+                        //loginActivity.finish()
                     }
 
                 } else {
                     when (response.code()) {
                         400 -> {
-                            AlertDialog.Builder(context)
-                                .setTitle("Message") //제목
-                                .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
-                                .setPositiveButton("닫기", null)
-                                .show()
+                            if(context == loginActivity){
+                                AlertDialog.Builder(context)
+                                    .setTitle("Message") //제목
+                                    .setMessage("아이디와 비밀번호를 확인해주세요.") // 메시지
+                                    .setNegativeButton("닫기", null)
+                                    .show()
+                                dialog.dismiss()
+                            }
                         }
                         500 -> {
-                            AlertDialog.Builder(context)
-                                .setTitle("Message") //제목
-                                .setMessage("잠시 후 다시 시도해주세요") // 메시지
-                                .setPositiveButton("닫기", null)
-                                .show()
+                            if(context == loginActivity){
+                                AlertDialog.Builder(context)
+                                    .setTitle("Message") //제목
+                                    .setMessage("잠시 후 다시 시도해주세요") // 메시지
+                                    .setNegativeButton("닫기", null)
+                                    .show()
+                                dialog.dismiss()
+                            }
                         }
                     }
                 }
             }
             override fun onFailure(call: Call<Request>, t: Throwable) {
                 t.stackTrace
+                LoadingActivity(context).dismiss()
             }
         })
+        LoadingActivity(context).cancel()
     }
 }

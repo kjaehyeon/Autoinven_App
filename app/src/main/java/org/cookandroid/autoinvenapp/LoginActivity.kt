@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var idtext: EditText
     lateinit var pwtext: EditText
     lateinit var autologin: CheckBox
-
+    val loginActivity: LoginActivity = this@LoginActivity
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         val masterKey = MasterKey.Builder(
@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
 
         if (PrefObject.prefs.getBoolean("ischecked", false)) {
             var intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             finish()
         }
