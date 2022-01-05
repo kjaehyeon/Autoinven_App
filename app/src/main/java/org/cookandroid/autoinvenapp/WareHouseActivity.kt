@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
@@ -22,6 +23,7 @@ import org.cookandroid.autoinvenapp.api.ItemListAPI
 import org.cookandroid.autoinvenapp.data.ItemListResponseData
 import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.objects.PrefObject
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +36,7 @@ class WareHouseActivity : AppCompatActivity() {
     lateinit var itemListAdapter : ItemListAdapter
     lateinit var dialog : LoadingActivity
     lateinit var emptyText : TextView
+    lateinit var tv_toobar : TextView
 
     var datas = mutableListOf<ItemListResponseData>()
     private val api = ApiClient.getApiClient().create(ItemListAPI::class.java)
@@ -45,11 +48,14 @@ class WareHouseActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         wid = intent.getIntExtra("wid", -1)
-        wareHouseName = intent.getStringExtra("wareHouseName").toString()
+        wareHouseName = intent.getStringExtra("warehouse_name").toString()
         rv_item_list = findViewById(R.id.rv_item_list)
         token = PrefObject.prefs.getString("token", "ERROR")!!
         dialog = LoadingActivity(this@WareHouseActivity)
         emptyText = findViewById(R.id.emptyText)
+        tv_toobar = findViewById(R.id.tv_toolbar)
+        tv_toobar.text = wareHouseName
+
         initRecyler()
     }
     private fun initRecyler() {

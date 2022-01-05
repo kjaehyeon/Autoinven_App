@@ -1,5 +1,6 @@
 package org.cookandroid.autoinvenapp.fragment
 
+
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -16,20 +17,23 @@ import org.cookandroid.autoinvenapp.R
 class ScanFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = context as MainActivity
         var view : View = inflater.inflate(R.layout.fragment_scan, container, false)
-//        val integrator = IntentIntegrator.forSupportFragment(this)
-//            .setBeepEnabled(false)
-//            .setOrientationLocked(true)
-//            .setPrompt("QR코드를 인증해주세요.")
-//            .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-//            .initiateScan()
+        IntentIntegrator.forSupportFragment(this)
+            .setBeepEnabled(false)
+            .setOrientationLocked(true)
+            .setPrompt("QR코드를 인증해주세요.")
+            .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+            .initiateScan()
+
         return view
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result : IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if(result !=null) {
