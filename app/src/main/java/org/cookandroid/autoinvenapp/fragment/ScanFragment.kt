@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,6 +21,10 @@ import org.cookandroid.autoinvenapp.R
 class ScanFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var openQRbtn : ExtendedFloatingActionButton
+    lateinit var itemIn : ExtendedFloatingActionButton
+    lateinit var itemOut : ExtendedFloatingActionButton
+    lateinit var emptyTextLayout : LinearLayout
+    lateinit var itemInfoLayout : LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +33,21 @@ class ScanFragment : Fragment() {
         mainActivity = context as MainActivity
         var view : View = inflater.inflate(R.layout.fragment_scan, container, false)
         openQRbtn = view.findViewById(R.id.openQRbtn)
+        itemIn = view.findViewById(R.id.item_in)
+        itemOut = view.findViewById(R.id.item_out)
+        emptyTextLayout = view.findViewById(R.id.emptyText_layout)
+        itemInfoLayout = view.findViewById(R.id.item_info_layout)
         openQRbtn.setOnClickListener {
             openQRScanner()
         }
+        itemInfoLayout.visibility = View.INVISIBLE
+        itemIn.visibility = View.INVISIBLE
+        itemOut.visibility = View.INVISIBLE
+        emptyTextLayout.visibility = View.VISIBLE
 
         return view
     }
+
     private fun openQRScanner(){
         IntentIntegrator.forSupportFragment(this)
             .setBeepEnabled(false)
