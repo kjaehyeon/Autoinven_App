@@ -16,7 +16,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/rv_warehouse_list" />
 
-<<<<<<< HEAD
+
     <TextView
         android:id="@+id/emptyText"
         android:layout_width="wrap_content"
@@ -25,7 +25,6 @@
         android:text="아직 등록된 물품이 없습니다."
         android:textSize="20sp"
         android:visibility="invisible" />
-=======
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_warehouse_list"
             android:layout_width="match_parent"
