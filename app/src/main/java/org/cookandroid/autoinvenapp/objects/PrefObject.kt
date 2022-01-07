@@ -1,8 +1,6 @@
 package org.cookandroid.autoinvenapp.objects
 
 import LoadingActivity
-import android.R
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -18,9 +16,6 @@ import org.cookandroid.autoinvenapp.data.Request
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.ClassCastException
 
 
 object PrefObject {

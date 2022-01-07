@@ -29,7 +29,6 @@ import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class DashBoardFragment : Fragment() {
     // TODO: Rename and change types of parameters
@@ -45,10 +44,6 @@ class DashBoardFragment : Fragment() {
     var datas = mutableListOf<WareHouseResponse>()
 
     private val api = ApiClient.getApiClient().create(WareHouseAPI::class.java)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -144,7 +139,7 @@ class DashBoardFragment : Fragment() {
 class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareHouseAdapter.ViewHolder>(){
     var datas = mutableListOf<WareHouseResponse>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_warehouse_list,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_warehouse_list_element,parent,false)
         return ViewHolder(view)
     }
 

@@ -49,12 +49,11 @@ class LoginActivity : AppCompatActivity() {
         }
 
         login.setOnClickListener {
+            PrefObject.sendLoginApi(idtext.text.toString(), pwtext.text.toString(),this@LoginActivity)
             if(autologin.isChecked){
                 PrefObject.editor.putBoolean("ischecked",true)
                 PrefObject.editor.apply()
             }
-            PrefObject.sendLoginApi(idtext.text.toString(), pwtext.text.toString(),this@LoginActivity)
         }
-
     }
 }
