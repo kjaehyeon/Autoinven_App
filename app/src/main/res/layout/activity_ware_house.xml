@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            tools:listitem="@layout/rv_item_list"
+            tools:listitem="@layout/rv_item_list_element"
             android:layout_marginTop="5dp"/>
         <TextView
             android:id="@+id/emptyText"

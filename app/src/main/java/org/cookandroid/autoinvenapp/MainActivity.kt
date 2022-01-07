@@ -47,7 +47,4 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount():Int = PAGE_CNT
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 }

@@ -13,9 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,7 +21,6 @@ import org.cookandroid.autoinvenapp.api.ItemListAPI
 import org.cookandroid.autoinvenapp.data.ItemListResponseData
 import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.objects.PrefObject
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,7 +68,6 @@ class WareHouseActivity : AppCompatActivity() {
             ) {
                 when(response.code()){
                     200 -> {
-                        Log.d("test", "response ok in warehouseactivity")
                         var iterator: Iterator<ItemListResponseData> = response.body()!!.iterator()
                         while (iterator.hasNext()) {
                             var data = iterator.next()
@@ -91,14 +87,6 @@ class WareHouseActivity : AppCompatActivity() {
                             }
                         }
                         dismissLoadingBar()
-                    }
-                    400 ->{
-                        AlertDialog.Builder(this@WareHouseActivity)
-                            .setTitle("Message") //제목
-                            .setMessage("비밀번호가 변경되었습니다.") // 메시지
-                            .setNegativeButton("닫기", null)
-                            .show()
-                        //TODO("자동으로 로그아웃 되는 로직 추가 바람")
                     }
                     401 ->{
                         PrefObject.sendLoginApi(
@@ -153,7 +141,7 @@ class WareHouseActivity : AppCompatActivity() {
 class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemListAdapter.ViewHolder>(){
     var datas = mutableListOf<ItemListResponseData>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_list,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_list_element,parent,false)
         return ViewHolder(view)
     }
 
@@ -187,7 +175,6 @@ class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemLi
                 0 -> {
                     datetimeName.text ="등록일"
                     statusBadge.setBackgroundColor(R.color.gray)
-
                     statusBadge.text="입고전"
                 }
                 1 ->{

@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import org.cookandroid.autoinvenapp.MainActivity
@@ -16,7 +19,7 @@ import org.cookandroid.autoinvenapp.R
 
 class ScanFragment : Fragment() {
     lateinit var mainActivity: MainActivity
-
+    lateinit var openQRbtn : ExtendedFloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,14 +27,20 @@ class ScanFragment : Fragment() {
     ): View? {
         mainActivity = context as MainActivity
         var view : View = inflater.inflate(R.layout.fragment_scan, container, false)
+        openQRbtn = view.findViewById(R.id.openQRbtn)
+        openQRbtn.setOnClickListener {
+            openQRScanner()
+        }
+
+        return view
+    }
+    private fun openQRScanner(){
         IntentIntegrator.forSupportFragment(this)
             .setBeepEnabled(false)
             .setOrientationLocked(true)
             .setPrompt("QR코드를 인증해주세요.")
             .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
             .initiateScan()
-
-        return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

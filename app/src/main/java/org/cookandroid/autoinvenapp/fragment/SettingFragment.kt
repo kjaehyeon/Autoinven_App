@@ -38,7 +38,7 @@ class SettingFragment : Fragment() {
         var logout = view.findViewById<LinearLayout>(R.id.logout)
         var info = view.findViewById<LinearLayout>(R.id.info)
         logout.setOnClickListener {
-            var dlg = getActivity()?.let { it1 -> AlertDialog.Builder(it1) }
+            var dlg = activity?.let { it1 -> AlertDialog.Builder(it1) }
             dlg!!.setTitle("로그아웃")
             dlg.setMessage("정말 로그아웃 하시겠습니까?")
             dlg.setNegativeButton("취소", null)
@@ -46,8 +46,7 @@ class SettingFragment : Fragment() {
                 var editor = PrefObject.prefs.edit()
                 editor.clear()
                 editor.apply()
-                var intent = Intent(mainActivity, LoginActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(mainActivity, LoginActivity::class.java))
                 mainActivity.finish()
             }
             dlg.show()
