@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 import androidx.viewpager2.widget.ViewPager2
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         override fun getItemCount():Int = PAGE_CNT
+
     }
 
 }

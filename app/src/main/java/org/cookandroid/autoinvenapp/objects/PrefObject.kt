@@ -55,8 +55,7 @@ object PrefObject {
                     Log.d("test","Received token : "+response.body()?.token)
                     editor.apply()
                     if(context is LoginActivity) {
-                        var intent = Intent(context, MainActivity::class.java)
-                        startActivity(context, intent, null)
+                        startActivity(context, Intent(context, MainActivity::class.java), null)
                         context.finish()
                         dialog.dismiss()
                     }
@@ -70,6 +69,15 @@ object PrefObject {
                                     .setNegativeButton("닫기", null)
                                     .show()
                                 dialog.dismiss()
+                            }
+                            else if(context is MainActivity){
+                                AlertDialog.Builder(context)
+                                    .setTitle("Message")
+                                    .setMessage("비밀번호가 변경되었습니다. 다시 로그인 해주세요.")
+                                    .setNegativeButton("닫기",null)
+                                    .show()
+                                startActivity(context, Intent(context, LoginActivity::class.java), null)
+                                context.finish()
                             }
                         }
                         500 -> {
@@ -87,7 +95,7 @@ object PrefObject {
                 t.stackTrace
                 AlertDialog.Builder(context)
                     .setTitle("Message") //제목
-                    .setMessage("Fail") // 메시지
+                    .setMessage("서버 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요") // 메시지
                     .setNegativeButton("닫기", null)
                     .show()
                 dialog.dismiss()

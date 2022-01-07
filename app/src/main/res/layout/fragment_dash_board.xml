@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/swiperefresh"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.DashBoardFragment">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_warehouse_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/rv_warehouse_list" />
+
+<<<<<<< HEAD
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="아직 등록된 물품이 없습니다."
+        android:textSize="20sp"
+        android:visibility="invisible" />
+=======
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_warehouse_list"
             android:layout_width="match_parent"
@@ -25,6 +42,7 @@
             android:layout_gravity="center"
             android:visibility="invisible"/>
     </FrameLayout>
+>>>>>>> 7c85e03fab9b0452bcb8e430da59a89f37db746a
 
 
-</FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
