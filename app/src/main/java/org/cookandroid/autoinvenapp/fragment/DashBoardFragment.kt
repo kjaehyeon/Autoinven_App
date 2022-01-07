@@ -5,15 +5,21 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import org.cookandroid.autoinvenapp.*
 import org.cookandroid.autoinvenapp.objects.ApiClient
@@ -29,6 +35,7 @@ class DashBoardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var swipeRefreshLayout : SwipeRefreshLayout
     lateinit var mainActivity: MainActivity
     lateinit var rv_warehouse_list : RecyclerView
     lateinit var wareHouseAdapter : WareHouseAdapter
@@ -36,7 +43,6 @@ class DashBoardFragment : Fragment() {
     lateinit var emptyText : TextView
     lateinit var dialog : LoadingActivity
     var datas = mutableListOf<WareHouseResponse>()
-
 
     private val api = ApiClient.getApiClient().create(WareHouseAPI::class.java)
 
@@ -50,11 +56,18 @@ class DashBoardFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_dash_board, container, false)
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh)
         mainActivity = context as MainActivity
         rv_warehouse_list = view.findViewById(R.id.rv_warehouse_list)
         token = PrefObject.prefs.getString("token", "ERROR")!!
         emptyText = view.findViewById(R.id.emptyText)
         dialog = LoadingActivity(mainActivity)
+        swipeRefreshLayout.setOnRefreshListener{
+            datas.clear()
+            wareHouseAdapter.notifyDataSetChanged()
+            initRecyler()
+            swipeRefreshLayout.isRefreshing = false
+        }
         initRecyler()
 
         return view!!
@@ -63,7 +76,6 @@ class DashBoardFragment : Fragment() {
     private fun initRecyler() {
         wareHouseAdapter = WareHouseAdapter(mainActivity)
         rv_warehouse_list.adapter = wareHouseAdapter
-
         val callGetWareHouseList = api.getWareHouseList()
         dialog.show()
         callGetWareHouseList.enqueue(object : Callback<List<WareHouseResponse>> {
@@ -122,6 +134,10 @@ class DashBoardFragment : Fragment() {
             emptyText.isVisible = true
         }
         dialog.dismiss()
+    }
+    fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
+        var ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(fragment).attach(fragment).commit()
     }
 }
 
