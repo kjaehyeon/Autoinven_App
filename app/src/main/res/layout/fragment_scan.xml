@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.ScanFragment">
-
+    <!--item info layout-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,15 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:visibility="visible">
             <ImageView
                 android:id="@+id/item_image"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:src="@drawable/default_img" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +57,9 @@
                 android:textSize="30sp" />
         </LinearLayout>
     </FrameLayout>
+    <!--item info layout-->
 
+    <!--floating buttons-->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/item_in"
         android:layout_width="wrap_content"
@@ -111,4 +109,5 @@
         app:icon="@drawable/ic_baseline_qr_code_scanner_24_large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <!--floating buttons-->
 </androidx.constraintlayout.widget.ConstraintLayout>

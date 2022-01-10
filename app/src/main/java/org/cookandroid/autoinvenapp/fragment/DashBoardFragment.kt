@@ -49,7 +49,6 @@ class DashBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_dash_board, container, false)
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh)
         mainActivity = context as MainActivity
@@ -95,7 +94,6 @@ class DashBoardFragment : Fragment() {
                         dismissLoadingBar()
                     }
                     401 ->{
-                        Log.d("test", "401")
                         PrefObject.sendLoginApi(
                             PrefObject.prefs.getString("id", "").toString(),
                             PrefObject.prefs.getString("pw", "").toString(),
@@ -163,8 +161,12 @@ class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareH
             address.text = wareHouse.address
             usage.text = wareHouse.usage.toString() + "%"
             description.text = wareHouse.description
-            Glide.with(itemView).load(wareHouse.images[0]).into(image)
 
+            if(wareHouse.images[0] == null){
+                image.setImageResource(R.drawable.default_img)
+            }else{
+                Glide.with(itemView).load(wareHouse.images[0]).into(image)
+            }
             itemView.setOnClickListener {
                 Intent(context, WareHouseActivity::class.java).apply {
                     putExtra("wid", wareHouse.wid)
