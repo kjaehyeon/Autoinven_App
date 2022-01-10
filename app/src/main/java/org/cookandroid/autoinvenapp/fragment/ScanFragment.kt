@@ -173,7 +173,7 @@ class ScanFragment : Fragment() {
     private fun fillItemInfo(data : ItemDetailData){
         itemName.text = data.it_name
         buyerName.text = data.buyer_name
-        size.text = data.size.toString() + " CVM"
+        size.text = data.size.toString() + " CBM"
         warehouseName.text = data.warehouse_name
         datetime.text = data.created_datetime
 
