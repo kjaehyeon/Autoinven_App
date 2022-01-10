@@ -98,45 +98,6 @@ class ScanFragment : Fragment() {
             showEmptyLayout()
         }
     }
-
-    private fun fillItemInfo(data : ItemDetailData){
-        itemName.text = data.it_name
-        buyerName.text = data.buyer_name
-        size.text = data.size.toString() + " CVM"
-        warehouseName.text = data.warehouse_name
-        datetime.text = data.created_datetime
-        description.text = data.note
-
-        if(data.image_url == null){
-            itemImage.setImageResource(R.drawable.default_img)
-        }else{
-            Glide.with(this).load(data.image_url).into(itemImage)
-        }
-        when(getItemStatusFromInt(data.current_status)){
-            BEFORE_RECEIVING ->{
-                itemStateBadge.text = BEFORE_RECEIVING.description
-                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state0_background)
-                datetimeTitle.text = BEFORE_RECEIVING.datetime_title
-            }
-            RECEIVED ->{
-                itemStateBadge.text = RECEIVED.description
-                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state1_background)
-                datetimeTitle.text = RECEIVED.datetime_title
-            }
-            RELEASED ->{
-                itemStateBadge.text = RELEASED.description
-                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state2_background)
-                datetimeTitle.text = RELEASED.datetime_title
-            }
-        }
-    }
-    private fun showEmptyLayout(){
-        itemInfoLayout.visibility = View.INVISIBLE
-        itemIn.visibility = View.INVISIBLE
-        itemOut.visibility = View.INVISIBLE
-        emptyTextLayout.visibility = View.VISIBLE
-    }
-
     private fun sendQR(qrContents : String){
         val api = ApiClient.getApiClient().create(ItemDetailAPI::class.java)
         val callGetItemDetail = api.getItemDetail(QR=qrContents)
@@ -208,6 +169,43 @@ class ScanFragment : Fragment() {
                 dialog.dismiss()
             }
         })
+    }
+    private fun fillItemInfo(data : ItemDetailData){
+        itemName.text = data.it_name
+        buyerName.text = data.buyer_name
+        size.text = data.size.toString() + " CVM"
+        warehouseName.text = data.warehouse_name
+        datetime.text = data.created_datetime
+        description.text = data.note
+
+        if(data.image_url == null){
+            itemImage.setImageResource(R.drawable.default_img)
+        }else{
+            Glide.with(this).load(data.image_url).into(itemImage)
+        }
+        when(getItemStatusFromInt(data.current_status)){
+            BEFORE_RECEIVING ->{
+                itemStateBadge.text = BEFORE_RECEIVING.description
+                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state0_background)
+                datetimeTitle.text = BEFORE_RECEIVING.datetime_title
+            }
+            RECEIVED ->{
+                itemStateBadge.text = RECEIVED.description
+                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state1_background)
+                datetimeTitle.text = RECEIVED.datetime_title
+            }
+            RELEASED ->{
+                itemStateBadge.text = RELEASED.description
+                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state2_background)
+                datetimeTitle.text = RELEASED.datetime_title
+            }
+        }
+    }
+    private fun showEmptyLayout(){
+        itemInfoLayout.visibility = View.INVISIBLE
+        itemIn.visibility = View.INVISIBLE
+        itemOut.visibility = View.INVISIBLE
+        emptyTextLayout.visibility = View.VISIBLE
     }
     private fun setInOutButtonListener(
         button : ExtendedFloatingActionButton,
