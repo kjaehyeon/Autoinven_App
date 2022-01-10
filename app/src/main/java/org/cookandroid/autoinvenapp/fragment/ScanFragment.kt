@@ -176,7 +176,11 @@ class ScanFragment : Fragment() {
         size.text = data.size.toString() + " CVM"
         warehouseName.text = data.warehouse_name
         datetime.text = data.created_datetime
-        description.text = data.note
+
+        if(data.note != null)
+            description.text = data.note
+        else
+            description.text="입력하지 않은 정보입니다."
 
         if(data.image_url == null){
             itemImage.setImageResource(R.drawable.default_img)
