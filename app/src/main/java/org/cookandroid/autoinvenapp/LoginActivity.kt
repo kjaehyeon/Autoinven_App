@@ -8,7 +8,6 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import org.cookandroid.autoinvenapp.objects.PrefObject

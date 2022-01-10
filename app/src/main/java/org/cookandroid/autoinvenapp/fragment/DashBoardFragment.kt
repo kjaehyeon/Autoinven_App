@@ -5,15 +5,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -21,19 +17,18 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import org.cookandroid.autoinvenapp.*
-import org.cookandroid.autoinvenapp.objects.ApiClient
+import org.cookandroid.autoinvenapp.MainActivity
+import org.cookandroid.autoinvenapp.R
+import org.cookandroid.autoinvenapp.WareHouseActivity
 import org.cookandroid.autoinvenapp.api.WareHouseAPI
 import org.cookandroid.autoinvenapp.data.WareHouseResponse
+import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DashBoardFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var swipeRefreshLayout : SwipeRefreshLayout
     lateinit var mainActivity: MainActivity
     lateinit var rv_warehouse_list : RecyclerView
@@ -49,7 +44,6 @@ class DashBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_dash_board, container, false)
         swipeRefreshLayout = view.findViewById(R.id.swiperefresh)
         mainActivity = context as MainActivity
@@ -95,7 +89,6 @@ class DashBoardFragment : Fragment() {
                         dismissLoadingBar()
                     }
                     401 ->{
-                        Log.d("test", "401")
                         PrefObject.sendLoginApi(
                             PrefObject.prefs.getString("id", "").toString(),
                             PrefObject.prefs.getString("pw", "").toString(),
@@ -163,8 +156,12 @@ class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareH
             address.text = wareHouse.address
             usage.text = wareHouse.usage.toString() + "%"
             description.text = wareHouse.description
-            Glide.with(itemView).load(wareHouse.images[0]).into(image)
 
+            if(wareHouse.images[0] == null){
+                image.setImageResource(R.drawable.default_img)
+            }else{
+                Glide.with(itemView).load(wareHouse.images[0]).into(image)
+            }
             itemView.setOnClickListener {
                 Intent(context, WareHouseActivity::class.java).apply {
                     putExtra("wid", wareHouse.wid)

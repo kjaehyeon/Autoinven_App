@@ -22,7 +22,7 @@
             android:id="@+id/emptyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아직 등록된 물품이 없습니다."
+            android:text="아직 등록된 창고가 없습니다."
             android:textSize="20sp"
             android:layout_gravity="center"
             android:visibility="invisible"/>
