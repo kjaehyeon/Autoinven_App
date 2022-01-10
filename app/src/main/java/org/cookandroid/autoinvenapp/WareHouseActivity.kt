@@ -10,10 +10,10 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -158,7 +158,7 @@ class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemLi
         private val datetimeName: TextView = itemView.findViewById(R.id.datetime_name)
         private val datetime : TextView = itemView.findViewById(R.id.datetime)
         private val buyerName : TextView = itemView.findViewById(R.id.buyer_name)
-        private val statusBadge : Button = itemView.findViewById(R.id.status_badge)
+        private val statusBadge : TextView = itemView.findViewById(R.id.status_badge)
 
         @SuppressLint("ResourceAsColor")
         fun bind(item: ItemListResponseData) {
@@ -174,17 +174,17 @@ class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemLi
             when(item.status){
                 0 -> {
                     datetimeName.text ="등록일"
-                    statusBadge.setBackgroundColor(R.color.gray)
+                    statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state0_background)
                     statusBadge.text="입고전"
                 }
                 1 ->{
                     datetimeName.text ="입고일"
-                    statusBadge.setBackgroundColor(R.color.light_green)
+                    statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state1_background)
                     statusBadge.text="입고"
                 }
                 2 ->{
                     datetimeName.text ="출고일"
-                    statusBadge.setBackgroundColor(R.color.light_red)
+                    statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state2_background)
                     statusBadge.text="출고"
                 }
             }

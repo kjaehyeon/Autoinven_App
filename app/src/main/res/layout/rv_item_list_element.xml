@@ -43,16 +43,18 @@
                     android:textStyle="bold"
                     android:layout_weight="3"
                     android:layout_gravity="center_vertical"/>
-                <Button
+                <TextView
                     android:id="@+id/status_badge"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="@color/gray"
+                    android:layout_height="30dp"
                     android:text="입고전"
-                    android:textSize="11sp"
+                    android:textSize="15sp"
                     android:layout_weight="1"
-                    android:padding="0dp"
-                    android:layout_gravity="top"/>
+                    android:layout_margin="5dp"
+                    android:layout_gravity="top"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/state0_background"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -61,7 +63,7 @@
             android:layout_height="0dp"
             android:orientation="horizontal"
             android:layout_marginHorizontal="5dp"
-            android:layout_weight="0.8">
+            android:layout_weight="0.5">
             <TextView
                 android:id="@+id/datetime_name"
                 android:layout_width="0dp"
@@ -84,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_weight="0.8"
+            android:layout_weight="0.5"
             android:layout_marginHorizontal="5dp">
             <TextView
                 android:layout_width="0dp"

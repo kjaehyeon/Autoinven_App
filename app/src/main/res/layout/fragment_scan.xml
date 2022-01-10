@@ -20,26 +20,211 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/light_gray"
             android:visibility="visible">
-            <ImageView
-                android:id="@+id/item_image"
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:src="@drawable/default_img" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/default_img" />
                 <TextView
+                    android:id="@+id/item_state_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="물품명"
-                    android:textSize="20sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="물품명"
-                    android:textSize="20sp"/>
+                    android:text="입고 대기 중"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:background="@drawable/state0_background"
+                    android:layout_marginBottom="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="물품명"
+                        android:textSize="20dp"
+                        android:textColor="@color/teal_200"/>
+                    <TextView
+                        android:id="@+id/item_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="itemID"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="화주"
+                        android:textSize="20dp"
+                        android:textColor="@color/teal_200"/>
+
+                    <TextView
+                        android:id="@+id/buyer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:text="buyername"
+                        android:textSize="20dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="물품 크기"
+                        android:textSize="20dp"
+                        android:textColor="@color/teal_200"/>
+
+                    <TextView
+                        android:id="@+id/size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:text="size"
+                        android:textSize="20dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="입고 창고 명"
+                        android:textColor="@color/teal_200"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/warehouse_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:text="warehouse_name"
+                        android:textSize="20dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/datetime_title"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="등록일"
+                        android:textColor="@color/teal_200"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/datetime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:text="2021-11-12 12:48:22"
+                        android:textSize="20dp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/teal_200"
+                        android:text="note"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:textSize="20dp"
+                        android:text="취급 주의해주세요"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -54,7 +239,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="QR을 스캔해주세요."
-                android:textSize="30sp" />
+                android:textSize="30dp" />
         </LinearLayout>
     </FrameLayout>
     <!--item info layout-->
@@ -69,7 +254,7 @@
         android:backgroundTint="@color/primary"
         android:clickable="true"
         android:text="ADD"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/white"
         app:icon="@drawable/ic_baseline_playlist_add_24"
@@ -86,7 +271,7 @@
         android:backgroundTint="@color/primary"
         android:clickable="true"
         android:text="OUT"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/white"
         app:icon="@drawable/ic_baseline_airport_shuttle_24"
@@ -104,7 +289,7 @@
         android:backgroundTint="@color/light_gray"
         android:clickable="true"
         android:text="SCAN"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textStyle="bold"
         app:icon="@drawable/ic_baseline_qr_code_scanner_24_large"
         app:layout_constraintBottom_toBottomOf="parent"

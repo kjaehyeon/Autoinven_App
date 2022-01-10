@@ -5,15 +5,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -21,19 +17,18 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import org.cookandroid.autoinvenapp.*
-import org.cookandroid.autoinvenapp.objects.ApiClient
+import org.cookandroid.autoinvenapp.MainActivity
+import org.cookandroid.autoinvenapp.R
+import org.cookandroid.autoinvenapp.WareHouseActivity
 import org.cookandroid.autoinvenapp.api.WareHouseAPI
 import org.cookandroid.autoinvenapp.data.WareHouseResponse
+import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DashBoardFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var swipeRefreshLayout : SwipeRefreshLayout
     lateinit var mainActivity: MainActivity
     lateinit var rv_warehouse_list : RecyclerView

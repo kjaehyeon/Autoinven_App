@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             tools:srcCompat="@drawable/ic_baseline_location_on_24"
-            android:layout_weight="0.8"/>
+            android:layout_weight="0.8" />
         <TextView
             android:id="@+id/address"
             android:layout_width="0dp"
