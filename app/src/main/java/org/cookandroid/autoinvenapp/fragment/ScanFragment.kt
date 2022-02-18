@@ -229,7 +229,7 @@ class ScanFragment : Fragment() {
                                 .show()
                             showEmptyLayout()
                         }
-                        401 ->{
+                        406 ->{
                             PrefObject.sendLoginApi(
                                 PrefObject.prefs.getString("id", "").toString(),
                                 PrefObject.prefs.getString("pw", "").toString(),

@@ -88,7 +88,7 @@ class DashBoardFragment : Fragment() {
                         }
                         dismissLoadingBar()
                     }
-                    401 ->{
+                    406 ->{
                         PrefObject.sendLoginApi(
                             PrefObject.prefs.getString("id", "").toString(),
                             PrefObject.prefs.getString("pw", "").toString(),
