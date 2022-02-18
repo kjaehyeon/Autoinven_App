@@ -5,17 +5,18 @@ import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface ScanAPI {
     @FormUrlEncoded
-    @PUT("/api/item/in")
+    @PUT("/api/item/{item_id}/in")
     fun itemIn(
-        @Field("qr") qr : String
+        @Path("item_id") item_id : String
     ): Call<Response<Void>>
 
     @FormUrlEncoded
-    @PUT("/api/item/out")
+    @PUT("/api/item/{item_id}/out")
     fun itemOut(
-        @Field("qr") qr : String
+        @Path("item_id") item_id : String
     ): Call<Response<Void>>
 }

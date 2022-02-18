@@ -7,3 +7,8 @@ data class Request (
     val token: String?,
 )
 
+data class LoginInfo (
+    val email: String,
+    val password: String,
+)
+

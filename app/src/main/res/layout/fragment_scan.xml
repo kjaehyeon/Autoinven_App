@@ -115,62 +115,6 @@
                     android:layout_gravity="center">
 
                     <TextView
-                        android:layout_width="110dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:text="물품 크기"
-                        android:textSize="20dp"
-                        android:textColor="@color/teal_200"/>
-
-                    <TextView
-                        android:id="@+id/size"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="30dp"
-                        android:text="size"
-                        android:textSize="20dp" />
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-
-                    <TextView
-                        android:layout_width="110dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:text="입고 창고 명"
-                        android:textColor="@color/teal_200"
-                        android:textSize="20dp" />
-
-                    <TextView
-                        android:id="@+id/warehouse_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="30dp"
-                        android:text="warehouse_name"
-                        android:textSize="20dp" />
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-
-                    <TextView
                         android:id="@+id/datetime_title"
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"

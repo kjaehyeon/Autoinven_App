@@ -74,12 +74,12 @@ class WareHouseActivity : AppCompatActivity() {
                             datas.apply {
                                 add(
                                     ItemListResponseData(
-                                        it_id = data.it_id,
+                                        item_id = data.item_id,
                                         name = data.name,
-                                        status = data.status,
-                                        datetime = data.datetime,
-                                        buyer_name = data.buyer_name,
-                                        image = data.image
+                                        i_state_id = data.i_state_id,
+                                        createdAt = data.createdAt,
+                                        user_email = data.user_email,
+                                        ItemImages = data.ItemImages
                                     )
                                 )
                                 itemListAdapter.datas = datas
@@ -162,16 +162,16 @@ class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemLi
 
         @SuppressLint("ResourceAsColor")
         fun bind(item: ItemListResponseData) {
-            if(item.image == null){
+            if(item.ItemImages!!.isEmpty()){
                 itemImage.setImageResource(R.drawable.default_img)
             }else{
-                Glide.with(itemView).load(item.image).into(itemImage)
+                Glide.with(itemView).load(ApiClient.BASE_URL+item.ItemImages).into(itemImage)
             }
             itemName.text = item.name
-            datetime.text = item.datetime
-            buyerName.text = item.buyer_name
+            datetime.text = item.createdAt
+            buyerName.text = item.user_email
 
-            when(item.status){
+            when(item.i_state_id){
                 0 -> {
                     datetimeName.text ="등록일"
                     statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state0_background)

@@ -4,11 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 
 data class WareHouseResponse(
-    val wid : Int,
-    val name : String,
-    val address : String,
-    val usage : Int,
-    val images : List<String>,
-    @SerializedName("info")
-    val description : String
+    val warehouse_id : Int,
+    val name_ko : String,
+    val address1_ko : String,
+    val WarehouseImages : List<String>?,
+    val note_ko : String?
 )

@@ -15,9 +15,10 @@
             android:id="@+id/rv_warehouse_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            tools:listitem="@layout/rv_warehouse_list_element"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/rv_warehouse_list_element" />
+
         <TextView
             android:id="@+id/emptyText"
             android:layout_width="wrap_content"

@@ -5,7 +5,6 @@ import LoadingActivity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import org.cookandroid.autoinvenapp.R
 import org.cookandroid.autoinvenapp.api.ItemDetailAPI
 import org.cookandroid.autoinvenapp.api.ScanAPI
 import org.cookandroid.autoinvenapp.data.ItemDetailData
-import org.cookandroid.autoinvenapp.enums.ItemStatus
 import org.cookandroid.autoinvenapp.enums.getItemStatusFromInt
 import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.objects.PrefObject
@@ -46,7 +44,6 @@ class ScanFragment : Fragment() {
     lateinit var itemStateBadge : TextView
     lateinit var itemName : TextView
     lateinit var buyerName : TextView
-    lateinit var size : TextView
     lateinit var warehouseName : TextView
     lateinit var datetimeTitle : TextView
     lateinit var datetime : TextView
@@ -69,8 +66,6 @@ class ScanFragment : Fragment() {
         itemStateBadge = view.findViewById(R.id.item_state_badge)
         itemName = view.findViewById(R.id.item_name)
         buyerName = view.findViewById(R.id.buyer_name)
-        size = view.findViewById(R.id.size)
-        warehouseName = view.findViewById(R.id.warehouse_name)
         datetimeTitle = view.findViewById(R.id.datetime_title)
         datetime = view.findViewById(R.id.datetime)
         description = view.findViewById(R.id.description)
@@ -98,48 +93,9 @@ class ScanFragment : Fragment() {
             showEmptyLayout()
         }
     }
-
-    private fun fillItemInfo(data : ItemDetailData){
-        itemName.text = data.it_name
-        buyerName.text = data.buyer_name
-        size.text = data.size.toString() + " CVM"
-        warehouseName.text = data.warehouse_name
-        datetime.text = data.created_datetime
-        description.text = data.note
-
-        if(data.image_url == null){
-            itemImage.setImageResource(R.drawable.default_img)
-        }else{
-            Glide.with(this).load(data.image_url).into(itemImage)
-        }
-        when(getItemStatusFromInt(data.current_status)){
-            BEFORE_RECEIVING ->{
-                itemStateBadge.text = BEFORE_RECEIVING.description
-                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state0_background)
-                datetimeTitle.text = BEFORE_RECEIVING.datetime_title
-            }
-            RECEIVED ->{
-                itemStateBadge.text = RECEIVED.description
-                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state1_background)
-                datetimeTitle.text = RECEIVED.datetime_title
-            }
-            RELEASED ->{
-                itemStateBadge.text = RELEASED.description
-                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state2_background)
-                datetimeTitle.text = RELEASED.datetime_title
-            }
-        }
-    }
-    private fun showEmptyLayout(){
-        itemInfoLayout.visibility = View.INVISIBLE
-        itemIn.visibility = View.INVISIBLE
-        itemOut.visibility = View.INVISIBLE
-        emptyTextLayout.visibility = View.VISIBLE
-    }
-
     private fun sendQR(qrContents : String){
         val api = ApiClient.getApiClient().create(ItemDetailAPI::class.java)
-        val callGetItemDetail = api.getItemDetail(QR=qrContents)
+        val callGetItemDetail = api.getItemDetail(item_id =qrContents)
         dialog.show()
         callGetItemDetail.enqueue(object : Callback<ItemDetailData> {
             override fun onResponse(
@@ -158,7 +114,7 @@ class ScanFragment : Fragment() {
                                 emptyTextLayout.visibility = View.INVISIBLE
                                 itemInfoLayout.visibility = View.VISIBLE
 
-                                val callItemIn = api.itemIn(qr=qrContents)
+                                val callItemIn = api.itemIn(item_id=qrContents)
                                 setInOutButtonListener(itemIn, "입고 완료", callItemIn)
                             }
                             RECEIVED ->{ // 입고 완료 상태일 경우
@@ -167,7 +123,7 @@ class ScanFragment : Fragment() {
                                 emptyTextLayout.visibility = View.INVISIBLE
                                 itemInfoLayout.visibility = View.VISIBLE
 
-                                val callItemOut = api.itemOut(qr=qrContents)
+                                val callItemOut = api.itemOut(item_id=qrContents)
                                 setInOutButtonListener(itemOut, "출고 완료", callItemOut)
                             }
                             RELEASED ->{ //출고 완료 상태일 경우
@@ -209,6 +165,48 @@ class ScanFragment : Fragment() {
             }
         })
     }
+    private fun fillItemInfo(data : ItemDetailData){
+        itemName.text = data.name
+        buyerName.text = data.user_email
+        datetime.text = data.createdAt
+        description.text = data.note
+
+        if(data.note != null)
+            description.text = data.note
+        else
+            description.text="입력하지 않은 정보입니다."
+
+        if(data.ItemImages!!.isEmpty()){
+            itemImage.setImageResource(R.drawable.default_img)
+        }else{
+            Glide.with(this).load(ApiClient.BASE_URL+data.ItemImages[0]).into(itemImage)
+        }
+        when(getItemStatusFromInt(data.current_status)){
+            BEFORE_RECEIVING ->{
+                itemStateBadge.text = BEFORE_RECEIVING.description
+                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state0_background)
+                datetimeTitle.text = BEFORE_RECEIVING.datetime_title
+            }
+            RECEIVED ->{
+                itemStateBadge.text = RECEIVED.description
+                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state1_background)
+                datetimeTitle.text = RECEIVED.datetime_title
+            }
+            RELEASED ->{
+                itemStateBadge.text = RELEASED.description
+                itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state2_background)
+                datetimeTitle.text = RELEASED.datetime_title
+            }
+        }
+    }
+    private fun showEmptyLayout(){
+        itemInfoLayout.visibility = View.INVISIBLE
+        itemIn.visibility = View.INVISIBLE
+        itemOut.visibility = View.INVISIBLE
+        emptyTextLayout.visibility = View.VISIBLE
+    }
+
+
     private fun setInOutButtonListener(
         button : ExtendedFloatingActionButton,
         dialogMessage : String,

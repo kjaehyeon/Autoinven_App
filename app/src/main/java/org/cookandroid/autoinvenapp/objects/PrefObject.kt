@@ -12,6 +12,7 @@ import androidx.security.crypto.MasterKey
 import org.cookandroid.autoinvenapp.LoginActivity
 import org.cookandroid.autoinvenapp.MainActivity
 import org.cookandroid.autoinvenapp.api.LoginAPI
+import org.cookandroid.autoinvenapp.data.LoginInfo
 import org.cookandroid.autoinvenapp.data.Request
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,7 +23,7 @@ object PrefObject {
     lateinit var prefs: SharedPreferences
     lateinit var editor : SharedPreferences.Editor
 
-    fun sendLoginApi(id: String, pw: String, context: Context) {
+    fun sendLoginApi(email: String, pw: String, context: Context) {
         Log.d("test","in sendLoginApi")
         val masterKey = MasterKey.Builder(
             context,
@@ -42,14 +43,15 @@ object PrefObject {
         editor = prefs.edit()
 
         if(context is LoginActivity) dialog.show()
-        val callPostLogin = api.postLogin(id, pw)
+        val callPostLogin = api.postLogin(LoginInfo(email, pw))
+
         callPostLogin.enqueue(object : Callback<Request> {
             override fun onResponse(
                 call: Call<Request>,
                 response: Response<Request>
             ) {
                 if (response.isSuccessful) {
-                    editor.putString("id", id)
+                    editor.putString("id", email)
                     editor.putString("pw", pw)
                     editor.putString("token", response.body()?.token)
                     Log.d("test","Received token : "+response.body()?.token)
@@ -61,7 +63,7 @@ object PrefObject {
                     }
                 } else {
                     when (response.code()) {
-                        400 -> {
+                        401 -> {
                             if(context is LoginActivity){
                                 AlertDialog.Builder(context)
                                     .setTitle("Message") //제목
@@ -76,8 +78,8 @@ object PrefObject {
                                     .setMessage("비밀번호가 변경되었습니다. 다시 로그인 해주세요.")
                                     .setNegativeButton("닫기",null)
                                     .show()
-                                startActivity(context, Intent(context, LoginActivity::class.java), null)
                                 context.finish()
+                                startActivity(context, Intent(context, LoginActivity::class.java), null)
                             }
                         }
                         500 -> {

@@ -52,31 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1.1"
-            android:layout_marginTop="5dp">
-            <TextView
-                android:id="@+id/usage_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="65%"
-                android:textSize="30sp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Usage"
-                android:textColor="@color/purple_500"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginRight="4dp"/>
-        </LinearLayout>
         <TextView
             android:id="@+id/description"
             android:layout_width="0dp"

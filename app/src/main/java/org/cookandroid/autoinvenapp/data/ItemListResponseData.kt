@@ -1,10 +1,10 @@
 package org.cookandroid.autoinvenapp.data
 
 data class ItemListResponseData (
-    val it_id : Int,
+    val item_id : Int,
     val name : String,
-    val status : Int,
-    val datetime : String,
-    val buyer_name : String,
-    val image : String?
+    val i_state_id : Int,
+    val createdAt : String,
+    val user_email : String,
+    val ItemImages : List<String>
 )

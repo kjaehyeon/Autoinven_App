@@ -1,16 +1,16 @@
 package org.cookandroid.autoinvenapp.api
 
+import org.cookandroid.autoinvenapp.data.LoginInfo
 import org.cookandroid.autoinvenapp.data.Request
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface LoginAPI {
-    @FormUrlEncoded
-    @POST("/api/login")
+    @POST("/api/auth/signin")
     fun postLogin(
-        @Field("id") id: String,
-        @Field("pw") password: String,
+       @Body loginInfo: LoginInfo
     ): Call<Request>
 }

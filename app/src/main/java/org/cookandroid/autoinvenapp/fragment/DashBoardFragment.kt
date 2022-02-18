@@ -79,8 +79,8 @@ class DashBoardFragment : Fragment() {
                             var data = iterator.next()
                             datas.apply {
                                 add(
-                                    WareHouseResponse(wid=data.wid, name=data.name, address=data.address,
-                                        usage=data.usage, images=data.images, description = data.description)
+                                    WareHouseResponse(warehouse_id=data.warehouse_id, name_ko=data.name_ko, address1_ko=data.address1_ko,
+                                         WarehouseImages=data.WarehouseImages, note_ko = data.note_ko)
                                 )
                                 wareHouseAdapter.datas = datas
                                 wareHouseAdapter.notifyDataSetChanged()
@@ -147,25 +147,23 @@ class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareH
         private val name: TextView = itemView.findViewById(R.id.name)
         private val address: TextView = itemView.findViewById(R.id.address)
         private val image: ImageView = itemView.findViewById(R.id.image)
-        private val usage : TextView = itemView.findViewById(R.id.usage_percent)
         private val description : TextView = itemView.findViewById(R.id.description)
 
 
         fun bind(wareHouse: WareHouseResponse) {
-            name.text = wareHouse.name
-            address.text = wareHouse.address
-            usage.text = wareHouse.usage.toString() + "%"
-            description.text = wareHouse.description
+            name.text = wareHouse.name_ko
+            address.text = wareHouse.address1_ko
+            description.text = wareHouse.note_ko
 
-            if(wareHouse.images[0] == null){
+            if(wareHouse.WarehouseImages!!.isEmpty()){
                 image.setImageResource(R.drawable.default_img)
             }else{
-                Glide.with(itemView).load(wareHouse.images[0]).into(image)
+                Glide.with(itemView).load(ApiClient.BASE_URL+wareHouse.WarehouseImages[0]).into(image)
             }
             itemView.setOnClickListener {
                 Intent(context, WareHouseActivity::class.java).apply {
-                    putExtra("wid", wareHouse.wid)
-                    putExtra("warehouse_name", wareHouse.name)
+                    putExtra("wid", wareHouse.warehouse_id)
+                    putExtra("warehouse_name", wareHouse.name_ko)
                 }.run { context.startActivity(this) }
             }
         }
