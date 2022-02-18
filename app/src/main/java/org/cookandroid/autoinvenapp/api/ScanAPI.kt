@@ -8,15 +8,13 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ScanAPI {
-    @FormUrlEncoded
     @PUT("/api/item/{item_id}/in")
     fun itemIn(
-        @Path("item_id") item_id : String
+        @Path("item_id") item_id : Int
     ): Call<Response<Void>>
 
-    @FormUrlEncoded
     @PUT("/api/item/{item_id}/out")
     fun itemOut(
-        @Path("item_id") item_id : String
+        @Path("item_id") item_id : Int
     ): Call<Response<Void>>
 }

@@ -8,9 +8,9 @@ enum class ItemStatus(val code : Int, val description : String, val datetime_tit
 }
 fun getItemStatusFromInt(value : Int) : ItemStatus{
     return when(value){
-        0 -> ItemStatus.BEFORE_RECEIVING
-        1 -> ItemStatus.RECEIVED
-        2 -> ItemStatus.RELEASED
+        1 -> ItemStatus.BEFORE_RECEIVING
+        2 -> ItemStatus.RECEIVED
+        3 -> ItemStatus.RELEASED
         else -> throw IllegalStateException("invalid value is passed to getItemStatusFromInt() fun")
     }
 }

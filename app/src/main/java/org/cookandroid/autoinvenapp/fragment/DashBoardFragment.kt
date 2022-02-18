@@ -54,15 +54,15 @@ class DashBoardFragment : Fragment() {
         swipeRefreshLayout.setOnRefreshListener{
             datas.clear()
             wareHouseAdapter.notifyDataSetChanged()
-            initRecyler()
+            initRecycler()
             swipeRefreshLayout.isRefreshing = false
         }
-        initRecyler()
+        initRecycler()
 
         return view!!
     }
 
-    private fun initRecyler() {
+    private fun initRecycler() {
         wareHouseAdapter = WareHouseAdapter(mainActivity)
         rv_warehouse_list.adapter = wareHouseAdapter
         val callGetWareHouseList = api.getWareHouseList()
@@ -158,7 +158,7 @@ class WareHouseAdapter(private val context: Context): RecyclerView.Adapter<WareH
             if(wareHouse.WarehouseImages!!.isEmpty()){
                 image.setImageResource(R.drawable.default_img)
             }else{
-                Glide.with(itemView).load(ApiClient.BASE_URL+wareHouse.WarehouseImages[0]).into(image)
+                Glide.with(itemView).load(ApiClient.BASE_URL+wareHouse.WarehouseImages[0].url).into(image)
             }
             itemView.setOnClickListener {
                 Intent(context, WareHouseActivity::class.java).apply {

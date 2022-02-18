@@ -9,8 +9,7 @@ import java.io.IOException
 
 object ApiClient {
 
-    const val BASE_URL = "http://192.168.0.18:5000"
-    //private const val BASE_URL = "http://192.168.0.17:5000"
+    const val BASE_URL = "http://52.79.48.229"
 
     fun getApiClient(withToken : Boolean = true): Retrofit {
         return if(withToken){

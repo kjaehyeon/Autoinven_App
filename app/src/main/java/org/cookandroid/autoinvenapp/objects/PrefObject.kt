@@ -24,7 +24,6 @@ object PrefObject {
     lateinit var editor : SharedPreferences.Editor
 
     fun sendLoginApi(email: String, pw: String, context: Context) {
-        Log.d("test","in sendLoginApi")
         val masterKey = MasterKey.Builder(
             context,
             MasterKey.DEFAULT_MASTER_KEY_ALIAS
@@ -78,6 +77,8 @@ object PrefObject {
                                     .setMessage("비밀번호가 변경되었습니다. 다시 로그인 해주세요.")
                                     .setNegativeButton("닫기",null)
                                     .show()
+                                dialog.dismiss()
+                                prefs.edit().clear().apply()
                                 context.finish()
                                 startActivity(context, Intent(context, LoginActivity::class.java), null)
                             }
@@ -97,8 +98,8 @@ object PrefObject {
                 t.stackTrace
                 AlertDialog.Builder(context)
                     .setTitle("Message") //제목
-                    .setMessage("서버 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요") // 메시지
-                    .setNegativeButton("닫기", null)
+                    .setMessage("서버 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요"+ t.message) // 메시지
+                    .setNegativeButton("닫기" , null)
                     .show()
                 dialog.dismiss()
             }

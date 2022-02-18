@@ -29,6 +29,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import org.cookandroid.autoinvenapp.enums.ItemStatus.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 
 class ScanFragment : Fragment() {
@@ -104,9 +106,10 @@ class ScanFragment : Fragment() {
             ) {
                 when(response.code()){
                     200 -> {
+
                         fillItemInfo(response.body()!!) //layout에 아이템 정보 채움
                         val api = ApiClient.getApiClient().create(ScanAPI::class.java)
-                        when(getItemStatusFromInt(response.body()!!.current_status)){
+                        when(getItemStatusFromInt(response.body()!!.i_state_id)){
                             //View들의 Visibility 설정
                             BEFORE_RECEIVING ->{ // 입고 전 상태일 경우
                                 itemIn.visibility = View.VISIBLE
@@ -114,7 +117,7 @@ class ScanFragment : Fragment() {
                                 emptyTextLayout.visibility = View.INVISIBLE
                                 itemInfoLayout.visibility = View.VISIBLE
 
-                                val callItemIn = api.itemIn(item_id=qrContents)
+                                val callItemIn = api.itemIn(item_id= response.body()!!.item_id)
                                 setInOutButtonListener(itemIn, "입고 완료", callItemIn)
                             }
                             RECEIVED ->{ // 입고 완료 상태일 경우
@@ -123,7 +126,7 @@ class ScanFragment : Fragment() {
                                 emptyTextLayout.visibility = View.INVISIBLE
                                 itemInfoLayout.visibility = View.VISIBLE
 
-                                val callItemOut = api.itemOut(item_id=qrContents)
+                                val callItemOut = api.itemOut(item_id=response.body()!!.item_id)
                                 setInOutButtonListener(itemOut, "출고 완료", callItemOut)
                             }
                             RELEASED ->{ //출고 완료 상태일 경우
@@ -144,7 +147,7 @@ class ScanFragment : Fragment() {
                             .show()
                         dialog.dismiss()
                     }
-                    401 ->{
+                    406 ->{
                         PrefObject.sendLoginApi(
                             PrefObject.prefs.getString("id", "").toString(),
                             PrefObject.prefs.getString("pw", "").toString(),
@@ -166,12 +169,10 @@ class ScanFragment : Fragment() {
         })
     }
     private fun fillItemInfo(data : ItemDetailData){
-
         itemName.text = data.name
-        buyerName.text = data.user_email
+        buyerName.text = data.User.name
         datetime.text = data.createdAt
         description.text = data.note
-
 
         if(data.note != null)
             description.text = data.note
@@ -181,10 +182,10 @@ class ScanFragment : Fragment() {
         if(data.ItemImages!!.isEmpty()){
             itemImage.setImageResource(R.drawable.default_img)
         }else{
-            Glide.with(this).load(ApiClient.BASE_URL+data.ItemImages[0]).into(itemImage)
+            Glide.with(this).load(ApiClient.BASE_URL+data.ItemImages[0].url).into(itemImage)
 
         }
-        when(getItemStatusFromInt(data.current_status)){
+        when(getItemStatusFromInt(data.i_state_id)){
             BEFORE_RECEIVING ->{
                 itemStateBadge.text = BEFORE_RECEIVING.description
                 itemStateBadge.background = ContextCompat.getDrawable(mainActivity, R.drawable.state0_background)
@@ -213,8 +214,8 @@ class ScanFragment : Fragment() {
         button : ExtendedFloatingActionButton,
         dialogMessage : String,
         call : Call<Response<Void>>){
-
         button.setOnClickListener {
+            dialog.show()
             call.enqueue(object : Callback<Response<Void>>{
                 override fun onResponse(
                     call: Call<Response<Void>>,
@@ -228,6 +229,7 @@ class ScanFragment : Fragment() {
                                 .setNegativeButton("닫기", null)
                                 .show()
                             showEmptyLayout()
+                        dialog.dismiss()
                         }
                         406 ->{
                             PrefObject.sendLoginApi(
@@ -237,6 +239,7 @@ class ScanFragment : Fragment() {
                             )
                             call.clone().enqueue(this)
                             //TODO("토큰 갱신 시도 횟수 제한 로직 추가 바람")
+                            dialog.dismiss()
                         }
                     }
                 }
@@ -250,8 +253,10 @@ class ScanFragment : Fragment() {
                         .setNegativeButton("닫기", null)
                         .show()
                     showEmptyLayout()
+                    dialog.dismiss()
                 }
             })
         }
     }
+
 }

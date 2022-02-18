@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.cookandroid.autoinvenapp.api.ItemListAPI
 import org.cookandroid.autoinvenapp.data.ItemListResponseData
+import org.cookandroid.autoinvenapp.enums.ItemStatus
+import org.cookandroid.autoinvenapp.enums.getItemStatusFromInt
 import org.cookandroid.autoinvenapp.objects.ApiClient
 import org.cookandroid.autoinvenapp.objects.PrefObject
 import retrofit2.Call
@@ -59,7 +61,7 @@ class WareHouseActivity : AppCompatActivity() {
         itemListAdapter = ItemListAdapter(this@WareHouseActivity)
         rv_item_list.adapter = itemListAdapter
 
-        val callGetWareHouseList = api.getItemList(wid=wid)
+        val callGetWareHouseList = api.getItemList(warehouse_id= wid)
         dialog.show()
         callGetWareHouseList.enqueue(object : Callback<List<ItemListResponseData>> {
             override fun onResponse(
@@ -76,10 +78,10 @@ class WareHouseActivity : AppCompatActivity() {
                                     ItemListResponseData(
                                         item_id = data.item_id,
                                         name = data.name,
-                                        i_state_id = data.i_state_id,
-                                        createdAt = data.createdAt,
-                                        user_email = data.user_email,
-                                        ItemImages = data.ItemImages
+                                        state = data.state,
+                                        date = data.date,
+                                        owner_name = data.owner_name,
+                                        image = data.image
                                     )
                                 )
                                 itemListAdapter.datas = datas
@@ -100,7 +102,7 @@ class WareHouseActivity : AppCompatActivity() {
                     else ->{
                         AlertDialog.Builder(this@WareHouseActivity)
                             .setTitle("Message") //제목
-                            .setMessage("다시 시도해 주세요.") // 메시지
+                            .setMessage("다시 시도해 주세요." + response.code() +" "+ response.message()) // 메시지
                             .setNegativeButton("닫기", null)
                             .show()
                         dismissLoadingBar()
@@ -126,13 +128,13 @@ class WareHouseActivity : AppCompatActivity() {
         dialog.dismiss()
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        return when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()
-                return true
+                true
             }
             else -> {
-                return super.onOptionsItemSelected(item)
+                super.onOptionsItemSelected(item)
             }
         }
     }
@@ -162,27 +164,27 @@ class ItemListAdapter(private val context: Context): RecyclerView.Adapter<ItemLi
 
         @SuppressLint("ResourceAsColor")
         fun bind(item: ItemListResponseData) {
-            if(item.ItemImages!!.isEmpty()){
+            if(item.image.isNullOrEmpty()){
                 itemImage.setImageResource(R.drawable.default_img)
             }else{
-                Glide.with(itemView).load(ApiClient.BASE_URL+item.ItemImages).into(itemImage)
+                Glide.with(itemView).load(ApiClient.BASE_URL+item.image).into(itemImage)
             }
             itemName.text = item.name
-            datetime.text = item.createdAt
-            buyerName.text = item.user_email
+            datetime.text = item.date
+            buyerName.text = item.owner_name
 
-            when(item.i_state_id){
-                0 -> {
+            when(getItemStatusFromInt(item.state)){
+                ItemStatus.BEFORE_RECEIVING -> {
                     datetimeName.text ="등록일"
                     statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state0_background)
                     statusBadge.text="입고전"
                 }
-                1 ->{
+                ItemStatus.RECEIVED ->{
                     datetimeName.text ="입고일"
                     statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state1_background)
                     statusBadge.text="입고"
                 }
-                2 ->{
+                ItemStatus.RELEASED ->{
                     datetimeName.text ="출고일"
                     statusBadge.background = ContextCompat.getDrawable(context, R.drawable.state2_background)
                     statusBadge.text="출고"
