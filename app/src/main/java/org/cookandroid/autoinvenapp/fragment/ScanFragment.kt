@@ -166,10 +166,12 @@ class ScanFragment : Fragment() {
         })
     }
     private fun fillItemInfo(data : ItemDetailData){
+
         itemName.text = data.name
         buyerName.text = data.user_email
         datetime.text = data.createdAt
         description.text = data.note
+
 
         if(data.note != null)
             description.text = data.note
@@ -180,6 +182,7 @@ class ScanFragment : Fragment() {
             itemImage.setImageResource(R.drawable.default_img)
         }else{
             Glide.with(this).load(ApiClient.BASE_URL+data.ItemImages[0]).into(itemImage)
+
         }
         when(getItemStatusFromInt(data.current_status)){
             BEFORE_RECEIVING ->{
@@ -205,7 +208,6 @@ class ScanFragment : Fragment() {
         itemOut.visibility = View.INVISIBLE
         emptyTextLayout.visibility = View.VISIBLE
     }
-
 
     private fun setInOutButtonListener(
         button : ExtendedFloatingActionButton,
